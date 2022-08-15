@@ -1,4 +1,4 @@
-package com.example.modiraa.model;
+package com.example.modiraa.post.model;
 
 import lombok.*;
 

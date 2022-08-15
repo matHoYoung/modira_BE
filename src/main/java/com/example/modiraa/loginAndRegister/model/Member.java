@@ -1,4 +1,4 @@
-package com.example.modiraa.model;
+package com.example.modiraa.loginAndRegister.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

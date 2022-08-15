@@ -19,4 +19,11 @@ public class PostController {
         postService.createPost(postRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("모임 생성 완료");
     }
+
+    // 모임 삭제
+    @DeleteMapping("/api/post/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
 }

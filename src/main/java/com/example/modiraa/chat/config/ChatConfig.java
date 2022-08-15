@@ -21,14 +21,16 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topic"); //SUB 1:n (subscribe 에 넣는 URL)
+        registry.enableSimpleBroker("/topic"); //SUB 1:n (subscribe 에 넣는 URL) /queue (1:1) /topic (1:n)
         registry.setApplicationDestinationPrefixes("/app"); //PUB 1:1 (Send 에 넣는 URL /app/chat/message )
     }
 
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws/chat").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/ws/chat")
+                .setAllowedOriginPatterns("*") //Cors 설정
+                .withSockJS();//sickJS 라이브러리를 사용하도록 설정
     }
 
 }

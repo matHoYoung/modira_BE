@@ -50,6 +50,18 @@ public class PostService {
 
     }
 
+    // 카테고리별 모임
+    public Page<PostsResponseDto> showPosts(String category, Pageable pageable) {
+        log.info("category -> {}", category);
+
+        Page<Post> posts = postRepository.findAllByCategoryContains(category, pageable);
+
+        log.info("result=> {}", posts);
+        log.info("result=> {}", posts.getContent());
+
+        return postResponseDto(posts);
+    }
+
     private Page<PostsResponseDto> postResponseDto(Page<Post> postSlice) {
         return postSlice.map(p ->
                 PostsResponseDto.builder()

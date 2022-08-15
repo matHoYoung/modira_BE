@@ -10,4 +10,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                                                                        String title,
                                                                        String address,
                                                                        Pageable pageable);
+    Page<Post> findAllByCategoryContains(String category, Pageable pageable);
 }

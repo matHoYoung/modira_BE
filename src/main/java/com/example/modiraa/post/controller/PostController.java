@@ -36,6 +36,14 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
+    // 카테코리별 모임
+    @GetMapping("/api/post")
+    public ResponseEntity<Slice<PostsResponseDto>> getPosts(@RequestParam(value = "category", defaultValue = "") String category,
+                                                            @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 8) Pageable pageable){
+        Page<PostsResponseDto> posts = postService.showPosts(category, pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(posts);
+    }
+
     // 모임 삭제
     @DeleteMapping("/api/post/{postId}")
     public ResponseEntity<Void> deletePost(@PathVariable Long postId) {

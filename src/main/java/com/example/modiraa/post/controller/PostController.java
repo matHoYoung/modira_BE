@@ -1,5 +1,6 @@
 package com.example.modiraa.post.controller;
 
+import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
 import com.example.modiraa.post.dto.PostListDto;
 import com.example.modiraa.post.dto.PostRequestDto;
 import com.example.modiraa.post.dto.PostsResponseDto;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -22,8 +24,10 @@ public class PostController {
 
     // 모임 생성
     @PostMapping("/api/post")
-    public ResponseEntity<String> createPost(@RequestBody PostRequestDto postRequestDto) {
-        postService.createPost(postRequestDto);
+    public ResponseEntity<String> createPost(@RequestBody PostRequestDto postRequestDto,
+                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String username = userDetails.getUsername();
+        postService.createPost(username, postRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("모임 생성 완료");
     }
 
@@ -54,8 +58,9 @@ public class PostController {
 
     // 모임 삭제
     @DeleteMapping("/api/post/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
-        postService.deletePost(postId);
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId,
+                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        postService.deletePost(postId, userDetails);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }

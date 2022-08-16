@@ -1,5 +1,8 @@
 package com.example.modiraa.post.service;
 
+import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
+import com.example.modiraa.loginAndRegister.model.Member;
+import com.example.modiraa.loginAndRegister.repository.UserRepository;
 import com.example.modiraa.post.dto.PostListDto;
 import com.example.modiraa.post.dto.PostRequestDto;
 import com.example.modiraa.post.dto.PostsResponseDto;
@@ -12,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -19,11 +23,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostService {
 
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
 
     // 모임 생성
-    public void createPost(PostRequestDto postRequestDto) {
+    public void createPost(String username, PostRequestDto postRequestDto) {
+        Member member = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("다시 로그인해 주세요."));
+
         Post post = Post.builder()
                 .category(postRequestDto.getCategory())
                 .title(postRequestDto.getTitle())
@@ -34,7 +42,9 @@ public class PostService {
                 .menu(postRequestDto.getMenu())
                 .gender(postRequestDto.getGender())
                 .age(postRequestDto.getAge())
+                .member(member)
                 .build();
+
         postRepository.save(post);
     }
 
@@ -102,11 +112,18 @@ public class PostService {
     }
 
     // 모임 삭제
-    public void deletePost(Long postId) {
+    public void deletePost(Long postId, UserDetailsImpl userDetails) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
 
-        postRepository.delete(post);
+        Long memberId = userDetails.getMember().getId();
+
+        if (memberId.equals(post.getMember().getId())) {
+            postRepository.delete(post);
+        } else {
+            throw new IllegalArgumentException("모임을 삭제할 권한이 없습니다");
+        }
+
     }
 
 }

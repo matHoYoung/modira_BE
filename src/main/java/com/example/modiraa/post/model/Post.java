@@ -1,5 +1,6 @@
 package com.example.modiraa.post.model;
 
+import com.example.modiraa.loginAndRegister.model.Member;
 import lombok.*;
 
 import javax.persistence.*;
@@ -51,5 +52,9 @@ public class Post {
     //나이대
     @Column
     private String age;
+
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
 }

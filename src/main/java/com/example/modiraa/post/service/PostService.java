@@ -1,13 +1,17 @@
 package com.example.modiraa.post.service;
 
+import com.example.modiraa.post.dto.PostListDto;
 import com.example.modiraa.post.dto.PostRequestDto;
 import com.example.modiraa.post.dto.PostsResponseDto;
 import com.example.modiraa.post.model.Post;
+import com.example.modiraa.post.repository.PostImageRepository;
 import com.example.modiraa.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final PostImageRepository postImageRepository;
 
     // 모임 생성
     public void createPost(PostRequestDto postRequestDto) {
@@ -62,6 +67,25 @@ public class PostService {
         return postResponseDto(posts);
     }
 
+    // 메인 페이지 카테코리별 모임
+    public PostListDto showPostList() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Pageable pageable = PageRequest.of(0, 8, sort);
+
+        Page<Post> postAll = postRepository.findAll(pageable);
+        Page<Post> postGoldenBell = postRepository.findAllByCategoryContains("골든벨", pageable);
+        Page<Post> postDutchPay = postRepository.findAllByCategoryContains("N빵", pageable);
+
+
+        PostListDto postListDto = new PostListDto();
+
+        postListDto.setPostAll(postResponseDto(postAll));
+        postListDto.setPostGoldenBell(postResponseDto(postGoldenBell));
+        postListDto.setPostDutchPay(postResponseDto(postDutchPay));
+
+        return postListDto;
+    }
+
     private Page<PostsResponseDto> postResponseDto(Page<Post> postSlice) {
         return postSlice.map(p ->
                 PostsResponseDto.builder()
@@ -72,6 +96,7 @@ public class PostService {
                         .date(p.getDate())
                         .numberOfPeople(p.getNumberofpeople())
                         .menu(p.getMenu())
+                        .menuForImage(postImageRepository.findByMenu(p.getMenu()).getImageurl())
                         .build()
         );
     }
@@ -83,4 +108,5 @@ public class PostService {
 
         postRepository.delete(post);
     }
+
 }

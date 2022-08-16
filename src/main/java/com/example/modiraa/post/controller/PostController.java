@@ -1,5 +1,6 @@
 package com.example.modiraa.post.controller;
 
+import com.example.modiraa.post.dto.PostListDto;
 import com.example.modiraa.post.dto.PostRequestDto;
 import com.example.modiraa.post.dto.PostsResponseDto;
 import com.example.modiraa.post.service.PostService;
@@ -36,12 +37,19 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 
-    // 카테코리별 모임
+    // 카테코리별 모임 더보기
     @GetMapping("/api/post")
     public ResponseEntity<Slice<PostsResponseDto>> getPosts(@RequestParam(value = "category", defaultValue = "") String category,
                                                             @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 8) Pageable pageable){
         Page<PostsResponseDto> posts = postService.showPosts(category, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(posts);
+    }
+
+    // 메인 페이지 카테코리별 모임
+    @GetMapping("/api/post/list")
+    public ResponseEntity<PostListDto> getPostList(){
+        PostListDto postList = postService.showPostList();
+        return ResponseEntity.status(HttpStatus.OK).body(postList);
     }
 
     // 모임 삭제

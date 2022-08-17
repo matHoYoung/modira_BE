@@ -4,6 +4,7 @@ import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
 import com.example.modiraa.loginAndRegister.dto.LoginIdCheckDto;
 import com.example.modiraa.loginAndRegister.dto.SignupRequestDto;
 import com.example.modiraa.loginAndRegister.dto.SocialSignupRequestDto;
+import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.loginAndRegister.service.KakaoService;
 import com.example.modiraa.loginAndRegister.service.S3Uploader;
 import com.example.modiraa.loginAndRegister.service.UserService;
@@ -56,7 +57,7 @@ public class UserController {
 
     //카카오 소셜 로그인
     @GetMapping("/auth/kakao/callback")
-    public @ResponseBody boolean kakaoCalback(String code, HttpServletResponse response) {      //ResponseBody -> Data를 리턴해주는 컨트롤러 함수
+    public @ResponseBody Member kakaoCalback(String code, HttpServletResponse response) {      //ResponseBody -> Data를 리턴해주는 컨트롤러 함수
         return kakaoService.requestKakao(code, response);
     }
 

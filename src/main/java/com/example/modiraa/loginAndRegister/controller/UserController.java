@@ -3,14 +3,19 @@ package com.example.modiraa.loginAndRegister.controller;
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
 import com.example.modiraa.loginAndRegister.dto.LoginIdCheckDto;
 import com.example.modiraa.loginAndRegister.dto.SignupRequestDto;
+import com.example.modiraa.loginAndRegister.dto.SocialSignupRequestDto;
+import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.loginAndRegister.service.KakaoService;
+import com.example.modiraa.loginAndRegister.service.S3Uploader;
 import com.example.modiraa.loginAndRegister.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,11 +24,30 @@ public class UserController {
 
     private final UserService userService;
     private final KakaoService kakaoService;
+    private final S3Uploader s3Uploader;
+
+    //S3 Test controller
+    @PostMapping("/upload")
+    @ResponseBody
+    public String upload(@RequestParam("data") MultipartFile multipartFile) throws IOException {
+        return s3Uploader.upload(multipartFile, "static");
+    }
 
     // 회원 가입 요청 처리
     @PostMapping("/api/user/signup")
-    public String registerUser(@Valid @RequestBody SignupRequestDto requestDto) {
+    public String registerUser(@Valid @RequestBody SignupRequestDto requestDto) throws IOException {
         String res = userService.registerUser(requestDto);
+        if (res.equals("")) {
+            return "회원가입 성공";
+        } else {
+            return res;
+        }
+    }
+
+    // 소셜 회원 가입 요청 처리
+    @PostMapping("/api/user/register")
+    public String registerSocialUser(@Valid @ModelAttribute SocialSignupRequestDto requestDto) throws IOException {
+        String res = userService.registerSocialUser(requestDto);
         if (res.equals("")) {
             return "회원가입 성공";
         } else {
@@ -33,12 +57,9 @@ public class UserController {
 
     //카카오 소셜 로그인
     @GetMapping("/auth/kakao/callback")
-    public @ResponseBody boolean kakaoCalback(String code, HttpServletResponse response) {      //ResponseBody -> Data를 리턴해주는 컨트롤러 함수
+    public @ResponseBody Member kakaoCalback(String code, HttpServletResponse response) {      //ResponseBody -> Data를 리턴해주는 컨트롤러 함수
         return kakaoService.requestKakao(code, response);
     }
-
-//    //추가 회원가입
-//    @PostMapping("/api/user/register")
 
     //로그인 유저 정보
     @GetMapping("/api/login/auth")

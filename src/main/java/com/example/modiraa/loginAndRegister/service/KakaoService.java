@@ -1,7 +1,5 @@
 package com.example.modiraa.loginAndRegister.service;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
 import com.example.modiraa.loginAndRegister.model.KakaoProfile;
 import com.example.modiraa.loginAndRegister.model.Member;
@@ -26,7 +24,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -123,7 +120,7 @@ public class KakaoService {
                 .kakaoNickname(kakaoProfile.getProperties().getNickname())
                 .username("Kakaoname" + kakaoProfile.getId())
                 .password(kakaoProfile.getId().toString()) //임시 비밀번호
-                .userProfile(kakaoProfile.getProperties().getProfile_image())
+                .profileImage(kakaoProfile.getProperties().getProfile_image())
                 .oauth("kakao")
                 .build();
 
@@ -148,24 +145,21 @@ public class KakaoService {
             //홀더에 검증이 완료된 정보 값 넣어준다. -> 이제 controller 에서 @AuthenticationPrincipal UserDetailsImpl userDetails 로 정보를 꺼낼 수 있다.
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            String jwtToken = JWT.create()
-                    .withSubject("cos토큰")
-                    .withExpiresAt(new Date(System.currentTimeMillis() + (60000 * 10)))
-                    .withClaim("username", userDetails.getMember().getUsername())
-                    .sign(Algorithm.HMAC512(secretKey));
+            //JWT 토큰 발급
+            String jwtToken = userService.JwtTokenCreate(userDetails.getMember().getUsername());
 
             response.addHeader("Authorization", jwtToken);
-            System.out.println("JWT토큰 : " + jwtToken);
+            System.out.println("JWT토큰 : " + "Bearer "+jwtToken);
         }
         return true;
     }
 
-    //신규 카카오 회원가입
+    //신규 카카오 회원 강제 가입
     public String SignupKakaoUser(Member kakaoMember) {
         String error = "";
         String username = kakaoMember.getUsername();
         String password = kakaoMember.getPassword();
-        String profileImage = kakaoMember.getUserProfile();
+        String profileImage = kakaoMember.getProfileImage();
         String kakaoNickname = kakaoMember.getKakaoNickname();
         String oauth = kakaoMember.getOauth();
 

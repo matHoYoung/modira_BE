@@ -1,6 +1,7 @@
 package com.example.modiraa.post.controller;
 
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
+import com.example.modiraa.post.dto.PostDetailResponseDto;
 import com.example.modiraa.post.dto.PostListDto;
 import com.example.modiraa.post.dto.PostRequestDto;
 import com.example.modiraa.post.dto.PostsResponseDto;
@@ -54,6 +55,13 @@ public class PostController {
     public ResponseEntity<PostListDto> getPostList(){
         PostListDto postList = postService.showPostList();
         return ResponseEntity.status(HttpStatus.OK).body(postList);
+    }
+
+    // 모임 상세페이지
+    @GetMapping("/api/post/detail/{postId}")
+    public ResponseEntity<PostDetailResponseDto> postDetail(@PathVariable Long postId){
+        PostDetailResponseDto postDetail = postService.getPostDetail(postId);
+        return ResponseEntity.status(HttpStatus.OK).body(postDetail);
     }
 
     // 모임 삭제

@@ -3,6 +3,7 @@ package com.example.modiraa.post.service;
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
 import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.loginAndRegister.repository.UserRepository;
+import com.example.modiraa.post.dto.PostDetailResponseDto;
 import com.example.modiraa.post.dto.PostListDto;
 import com.example.modiraa.post.dto.PostRequestDto;
 import com.example.modiraa.post.dto.PostsResponseDto;
@@ -111,6 +112,24 @@ public class PostService {
         );
     }
 
+    // 모임 상세페이지
+    public PostDetailResponseDto getPostDetail(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(()-> new IllegalArgumentException("게시글이 없습니다."));
+
+        return PostDetailResponseDto.builder()
+                .category(post.getCategory())
+                .title(post.getTitle())
+                .contents(post.getContents())
+                .address(post.getAddress())
+                .date(post.getDate())
+                .numberOfPeople(post.getNumberofpeople())
+                .menu(post.getMenu())
+                .gender(post.getGender())
+                .age(post.getAge())
+                .build();
+    }
+
     // 모임 삭제
     public void deletePost(Long postId, UserDetailsImpl userDetails) {
         Post post = postRepository.findById(postId).orElseThrow(
@@ -123,7 +142,6 @@ public class PostService {
         } else {
             throw new IllegalArgumentException("모임을 삭제할 권한이 없습니다");
         }
-
     }
 
 }

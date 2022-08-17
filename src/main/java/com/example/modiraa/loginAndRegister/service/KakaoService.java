@@ -129,7 +129,7 @@ public class KakaoService {
 
         if (originMember.getUsername() == null) {
             System.out.println("신규 회원입니다.");
-            SignupKakaoUser(kakaoMember);
+            SignupKakaoUser(kakaoMember); // <-- 이 로직이 자동 로그인 입니다. 지우시면 회원가입 따로 하시면 됩니다.
             return kakaoMember;
         }
 

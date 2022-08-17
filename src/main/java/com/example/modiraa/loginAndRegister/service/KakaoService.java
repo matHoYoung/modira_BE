@@ -129,7 +129,7 @@ public class KakaoService {
 
         if (originMember.getUsername() == null) {
             System.out.println("신규 회원입니다.");
-//            SignupKakaoUser(kakaoMember);
+            SignupKakaoUser(kakaoMember);
             return kakaoMember;
         }
 

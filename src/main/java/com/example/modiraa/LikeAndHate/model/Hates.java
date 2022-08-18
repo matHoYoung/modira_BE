@@ -18,11 +18,16 @@ public class Hates {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private Member member;
+    @JoinColumn(name = "GIVER_USER_ID", nullable = false)
+    private Member giver;
 
-    public Hates(Member member) {
-        this.member = member;
+    @ManyToOne
+    @JoinColumn(name = "RECEIVER_USER_ID", nullable = false)
+    private Member receiver;
+
+    public Hates(Member giver, Member receiver) {
+        this.giver = giver;
+        this.receiver = receiver;
 
     }
 }

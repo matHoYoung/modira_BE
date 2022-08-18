@@ -19,11 +19,17 @@ public class Likes {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private Member member;
+    @JoinColumn(name = "GIVER_USER_ID", nullable = false)
+    private Member giver;
 
-    public Likes(Member member) {
-        this.member = member;
+    @ManyToOne
+    @JoinColumn(name = "RECEIVER_USER_ID", nullable = false)
+    private Member receiver;
+
+
+    public Likes(Member giver, Member receiver) {
+        this.giver = giver;
+        this.receiver =receiver;
 
     }
 }

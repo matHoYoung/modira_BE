@@ -64,11 +64,11 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-//    // 모임 조회
-//    @GetMapping("/api/main/rooms")
-//    public ResponseEntity<PostRequestDto> readPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
-//        PostRequestDto postRequestDto = postService.readPost(userDetails);
-//        return ResponseEntity.status(HttpStatus.OK).body(postRequestDto);
+//    // 내가 작성한 모임 조회
+//    @GetMapping("/api/myposts")
+//    public ResponseEntity<PostsResponseDto> getMyReadPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(postService.getMyReadPost(userDetails));
 //    }
 
 }

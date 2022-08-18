@@ -25,13 +25,21 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
+    //내용
+    @Column(nullable = false)
+    private String contents;
+
     //주소
     @Column(nullable = false)
     private String address;
 
-    //내용
+    //위도
     @Column(nullable = false)
-    private String contents;
+    private double latitude;
+
+    //경도
+    @Column(nullable = false)
+    private double longitude;
 
     //날짜
     @Column(nullable = false)

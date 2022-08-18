@@ -18,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -125,5 +127,21 @@ public class PostService {
         }
 
     }
+
+//    //내가 쓴 모임 조회
+//    public PostRequestDto readPost(UserDetailsImpl userDetails) throws IllegalAccessException {
+//        Pageable pageable = PageRequest.ofSize(1);
+//        Optional<Post> post = postRepository.findByMemberOrderByIdDesc(userDetails.getMember(), pageable);
+//        return post.map(value -> PostRequestDto.builder()
+//                .title(value.getTitle())
+//                .category(value.getCategory())
+//                .numberOfPeople(value.getNumberofpeople())
+//                .date(value.getDate())
+//                .menu(value.getMenu())
+//                .contents(value.getContents())
+//                .gender(value.getGender())
+//                .build()).orElse(null);
+//
+//    }
 
 }

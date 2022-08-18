@@ -1,10 +1,12 @@
 package com.example.modiraa.post.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@Builder
 public class PostRequestDto {
     private String category;
     private String title;

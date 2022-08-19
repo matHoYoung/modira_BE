@@ -25,4 +25,5 @@ public class PostDetailResponseDto {
     private String writerNickname;
     private String writerGender;
     private String writerAge;
+    private Long writerScore;
 }

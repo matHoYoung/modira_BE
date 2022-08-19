@@ -1,5 +1,7 @@
 package com.example.modiraa.post.service;
 
+import com.example.modiraa.LikeAndHate.repository.HatesRepository;
+import com.example.modiraa.LikeAndHate.repository.LikesRepository;
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
 import com.example.modiraa.post.dto.PostDetailResponseDto;
 import com.example.modiraa.post.dto.PostListDto;
@@ -21,6 +23,8 @@ import org.springframework.stereotype.Service;
 public class PostReadService {
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
+    private final LikesRepository likesRepository;
+    private final HatesRepository hatesRepository;
 
     // 모임 검색
     public Page<PostsResponseDto> searchPosts(String title, String address, Pageable pageable, Long lastId) {
@@ -108,6 +112,8 @@ public class PostReadService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(()-> new IllegalArgumentException("게시글이 없습니다."));
 
+        Long score = likesRepository.likesCount(post.getMember()) - hatesRepository.hatesCount(post.getMember());
+
         return PostDetailResponseDto.builder()
                 .category(post.getCategory())
                 .title(post.getTitle())
@@ -124,6 +130,7 @@ public class PostReadService {
                 .writerNickname(post.getMember().getNickname())
                 .writerGender(post.getMember().getGender())
                 .writerAge(post.getMember().getAge())
+                .writerScore(score)
                 .build();
     }
 

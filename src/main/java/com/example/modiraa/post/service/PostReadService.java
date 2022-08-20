@@ -44,10 +44,11 @@ public class PostReadService {
     }
 
     // 카테고리별 모임
-    public Page<PostsResponseDto> showPosts(String category, Pageable pageable) {
+    public Page<PostsResponseDto> showPosts(String category, Pageable pageable, Long lastId) {
         log.info("category -> {}", category);
+        log.info("lastId -> {}", lastId);
 
-        Page<Post> posts = postRepository.findAllByCategoryContains(category, pageable);
+        Page<Post> posts = postRepository.findAllByIdLessThanAndCategoryContains(lastId, category, pageable);
 
         log.info("result=> {}", posts);
         log.info("result=> {}", posts.getContent());

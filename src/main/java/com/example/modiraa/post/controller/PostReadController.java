@@ -38,8 +38,9 @@ public class PostReadController {
     // 카테코리별 모임 더보기
     @GetMapping("/api/post")
     public ResponseEntity<Slice<PostsResponseDto>> getPosts(@RequestParam(value = "category", defaultValue = "") String category,
-                                                            @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 8) Pageable pageable){
-        Page<PostsResponseDto> posts = postReadService.showPosts(category, pageable);
+                                                            @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 8) Pageable pageable,
+                                                            @RequestParam(value = "lastId", defaultValue = "" + Long.MAX_VALUE) Long lastId){
+        Page<PostsResponseDto> posts = postReadService.showPosts(category, pageable, lastId);
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 

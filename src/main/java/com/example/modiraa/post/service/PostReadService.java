@@ -27,14 +27,14 @@ public class PostReadService {
     private final HatesRepository hatesRepository;
 
     // 모임 검색
-    public Page<PostsResponseDto> searchPosts(String title, String address, Pageable pageable, Long lastId) {
-        log.info("title -> {}", title);
+    public Page<PostsResponseDto> searchPosts(String keyword, String address, Pageable pageable, Long lastId) {
+        log.info("keyword -> {}", keyword);
         log.info("address -> {}", address);
         log.info("pageable -> {}", pageable);
         log.info("lastId -> {}", lastId);
 
         Page<Post> posts = postRepository
-                .findAllByIdLessThanAndTitleContainingAndAddressContains(lastId, title, address, pageable);
+                .findAllByIdLessThanAndTitleContainingAndAddressContainsOrMenuContaining(lastId, keyword, address, pageable, keyword);
 
         log.info("result=> {}", posts);
         log.info("result=> {}", posts.getContent());

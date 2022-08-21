@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Page<Post> findAllByIdLessThanAndTitleContainingAndAddressContains(Long lastId, String title, String address, Pageable pageable);
+    Page<Post> findAllByIdLessThanAndTitleContainingAndAddressContainsOrMenuContaining(Long lastId, String title, String address, Pageable pageable, String menu);
     Page<Post> findAllByIdLessThanAndCategoryContains(Long lastId, String category, Pageable pageable);
 
     Page<Post> findAllByCategoryContains(String category, Pageable pageable);

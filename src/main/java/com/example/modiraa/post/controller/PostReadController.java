@@ -27,11 +27,11 @@ public class PostReadController {
 
     // 모임 검색
     @GetMapping("/api/search/post")
-    public ResponseEntity<Slice<PostsResponseDto>> searchPosts(@RequestParam(value = "title", defaultValue = "") String title,
+    public ResponseEntity<Slice<PostsResponseDto>> searchPosts(@RequestParam(value = "keyword", defaultValue = "") String keyword,
                                                                @RequestParam(value = "address", defaultValue = "") String address,
                                                                @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 8) Pageable pageable,
                                                                @RequestParam(value = "lastId", defaultValue = "" + Long.MAX_VALUE) Long lastId){
-        Page<PostsResponseDto> posts = postReadService.searchPosts(title, address, pageable, lastId);
+        Page<PostsResponseDto> posts = postReadService.searchPosts(keyword, address, pageable, lastId);
         return ResponseEntity.status(HttpStatus.OK).body(posts);
     }
 

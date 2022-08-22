@@ -7,7 +7,6 @@ import com.example.modiraa.post.dto.PostDetailResponseDto;
 import com.example.modiraa.post.dto.PostListDto;
 import com.example.modiraa.post.dto.PostsResponseDto;
 import com.example.modiraa.post.model.Post;
-import com.example.modiraa.post.repository.PostImageRepository;
 import com.example.modiraa.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostReadService {
     private final PostRepository postRepository;
-    private final PostImageRepository postImageRepository;
     private final LikesRepository likesRepository;
     private final HatesRepository hatesRepository;
 
@@ -74,6 +72,7 @@ public class PostReadService {
         return postListDto;
     }
 
+    // 메인 페이지 카테코리별 모임
     public PostListDto showPostListMember(UserDetailsImpl userDetails) {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(0, 8, sort);
@@ -103,7 +102,7 @@ public class PostReadService {
                         .date(p.getDate())
                         .numberOfPeople(p.getNumberofpeople())
                         .menu(p.getMenu())
-                        .menuForImage(postImageRepository.findByMenu(p.getMenu()).getImageurl())
+                        .menuForImage(p.getPostImage().getImageurl())
                         .build()
         );
     }
@@ -134,5 +133,4 @@ public class PostReadService {
                 .writerScore(score)
                 .build();
     }
-
 }

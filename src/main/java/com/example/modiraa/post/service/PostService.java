@@ -5,11 +5,14 @@ import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.loginAndRegister.repository.UserRepository;
 import com.example.modiraa.post.dto.PostRequestDto;
 import com.example.modiraa.post.model.Post;
+import com.example.modiraa.post.model.PostImage;
+import com.example.modiraa.post.repository.PostImageRepository;
 import com.example.modiraa.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -18,11 +21,14 @@ public class PostService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final PostImageRepository postImageRepository;
 
     // 모임 생성
     public void createPost(String username, PostRequestDto postRequestDto) {
         Member member = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("다시 로그인해 주세요."));
+
+        PostImage postImage = postImageRepository.findByMenu(postRequestDto.getMenu());
 
         Post post = Post.builder()
                 .category(postRequestDto.getCategory())
@@ -37,6 +43,7 @@ public class PostService {
                 .gender(postRequestDto.getGender())
                 .age(postRequestDto.getAge())
                 .member(member)
+                .postImage(postImage)
                 .build();
 
         postRepository.save(post);

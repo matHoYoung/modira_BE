@@ -30,6 +30,5 @@ public class Likes {
     public Likes(Member giver, Member receiver) {
         this.giver = giver;
         this.receiver =receiver;
-
     }
 }

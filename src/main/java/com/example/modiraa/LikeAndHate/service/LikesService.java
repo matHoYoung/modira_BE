@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,7 +25,7 @@ public class LikesService {
 
     //유저의 평가 점수 +1점 부여하고 싶을때
     public ResponseEntity<?> userLikes(UserDetailsImpl userDetails, Long userId) {
-        System.out.println("------------------------------");
+
         //USERID 아이디로 USER 를 찾아서 저장
         Member receiver = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("유저가 없습니다"));
         Member giver = userDetails.getMember();
@@ -37,10 +38,13 @@ public class LikesService {
         if (HatesFound.isPresent()){
             return new ResponseEntity<>("한 사람의 유저에 좋아요,싫어요 둘다 평가 할 수 없습니다. ", HttpStatus.BAD_REQUEST);
         }
-        System.out.println("2222222222222222222222222222222222");
+        if(Objects.equals(giver.getId(), receiver.getId())) {
+            return new ResponseEntity<>("자기 자신을 평가할 수 없습니다.  ", HttpStatus.BAD_REQUEST);
+        }
+
         Likes likes = new Likes(giver, receiver);
         likesRepository.save(likes);
-        System.out.println("3333333333333333333333");
+
 
         return new ResponseEntity<>("좋아요 성공! ", HttpStatus.valueOf(201));
     }

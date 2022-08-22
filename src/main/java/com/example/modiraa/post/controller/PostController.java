@@ -32,11 +32,6 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-//    // 모임 조회
-//    @GetMapping("/api/main/rooms")
-//    public ResponseEntity<PostRequestDto> readPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
-//        PostRequestDto postRequestDto = postService.readPost(userDetails);
-//        return ResponseEntity.status(HttpStatus.OK).body(postRequestDto);
-//    }
+
 
 }

@@ -3,6 +3,7 @@ package com.example.modiraa.post.service;
 import com.example.modiraa.LikeAndHate.repository.HatesRepository;
 import com.example.modiraa.LikeAndHate.repository.LikesRepository;
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
+import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.post.dto.PostDetailResponseDto;
 import com.example.modiraa.post.dto.PostListDto;
 import com.example.modiraa.post.dto.PostsResponseDto;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -133,4 +136,22 @@ public class PostReadService {
                 .writerScore(score)
                 .build();
     }
+
 }
+
+
+    //내가 쓴 참석 모임 조회
+    public List<PostsResponseDto> getMyReadPost(UserDetailsImpl userDetails) {
+        Member member = userDetails.getMember();
+        Pageable pageable = PageRequest.ofSize(1);
+        return postRepository.MyPostRead(member, pageable);
+    }
+
+    //내가 참석한 모임 조회
+    public List<PostsResponseDto> getMyJoinPost(UserDetailsImpl userDetails) {
+        Member member = userDetails.getMember();
+        Pageable pageable = PageRequest.ofSize(1);
+        return postRepository.MyJoinRead(member, pageable);
+    }
+}
+

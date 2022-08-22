@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByIdLessThanAndTitleContainingAndAddressContainsOrMenuContaining(Long lastId, String title, String address, Pageable pageable, String menu);
     Page<Post> findAllByIdLessThanAndCategoryContains(Long lastId, String category, Pageable pageable);

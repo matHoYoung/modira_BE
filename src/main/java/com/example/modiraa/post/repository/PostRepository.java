@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
+
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByIdLessThanAndTitleContainingAndAddressContainsOrMenuContaining(Long lastId, String title, String address, Pageable pageable, String menu);
@@ -25,7 +25,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 //    Optional<Post> findByMemberOrderByIdDesc(Member member,Pageable pageable);
 // 내가 작성한 모임 조회
-    @Query("SELECT new com.example.modiraa.post.dto.PostsResponseDto(p.id, p.category, p.title, p.address, p.date, p.numberofpeople, p.menu, p.gender, p.menu)" +
+    @Query("SELECT new com.example.modiraa.post.dto.PostsResponseDto(p.id, p.category, p.title, p.address, p.date, p.numberofpeople, p.menu, p.gender, p.postImage.imageurl)" +
             "from Post p " +
             "where p .member =:member " +
             "order by p.id desc")
@@ -33,8 +33,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 
     //내가 참석한 모임 조회
-    @Query("SELECT new com.example.modiraa.post.dto.PostsResponseDto(p.id, p.category, p.title, p.address, p.date, p.numberofpeople, p.menu, p.gender, p.menu)" +
-            "from Post p " +
+    @Query("SELECT new com.example.modiraa.post.dto.PostsResponseDto(p.id, p.category, p.title, p.address, p.date, p.numberofpeople, p.menu, p.gender, p.postImage.imageurl)" +
+            "from Post p  " +
             "where p .member =:member " +
             "order by p.id desc")
     List<PostsResponseDto> MyJoinRead(@Param("member")Member member, Pageable pageable);

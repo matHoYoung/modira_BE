@@ -1,7 +1,7 @@
 package com.example.modiraa.chat.controller;
 
-import com.example.modiraa.chat.model.MessageType;
 import com.example.modiraa.chat.model.ChatMessage;
+import com.example.modiraa.chat.model.MessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;

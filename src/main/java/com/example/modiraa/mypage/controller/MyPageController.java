@@ -1,8 +1,8 @@
 package com.example.modiraa.mypage.controller;
 
+import com.example.modiraa.mypage.service.MyPageService;
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
 import com.example.modiraa.mypage.dto.UserProfileResponseDto;
-import com.example.modiraa.mypage.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -147,7 +147,7 @@ public class NaverService {
 
         }
         Member loginMember = userRepository.findByUsername(naverMember.getUsername()).orElseThrow(
-                ()-> new IllegalArgumentException("카카오 사용자가 없습니다.")
+                ()-> new IllegalArgumentException("네이버 사용자가 없습니다.")
         );
         return loginMember;
     }

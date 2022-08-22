@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -34,6 +35,11 @@ public class HatesService {
         if (likesFound.isPresent()){
             return new ResponseEntity<>("한 사람의 유저에 좋아요,싫어요 둘다 평가 할 수 없습니다. ", HttpStatus.BAD_REQUEST);
         }
+
+        if(Objects.equals(giver.getId(), receiver.getId())) {
+            return new ResponseEntity<>("자기 자신을 평가할 수 없습니다.  ", HttpStatus.BAD_REQUEST);
+        }
+
         Hates hates = new Hates(giver, receiver);
         hatesRepository.save(hates);
 

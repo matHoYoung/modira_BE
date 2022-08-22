@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 public class PostReadController {
@@ -61,4 +63,20 @@ public class PostReadController {
         PostDetailResponseDto postDetail = postReadService.getPostDetail(postId);
         return ResponseEntity.status(HttpStatus.OK).body(postDetail);
     }
+
+    // 내가 작성한 모임 조회
+    @GetMapping("/api/myposts")
+    public ResponseEntity<List<PostsResponseDto>> getMyReadPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+
+        return ResponseEntity.status(HttpStatus.OK).body(postReadService.getMyReadPost(userDetails));
+    }
+
+    // 내가 참석한 모임 조회
+    @GetMapping("/api/myrooms")
+    public ResponseEntity<List<PostsResponseDto>> getMyJoinPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+
+        return ResponseEntity.status(HttpStatus.OK).body(postReadService.getMyJoinPost(userDetails));
+    }
+
+
 }

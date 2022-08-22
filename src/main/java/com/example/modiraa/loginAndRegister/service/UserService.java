@@ -2,10 +2,10 @@ package com.example.modiraa.loginAndRegister.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.modiraa.loginAndRegister.dto.SocialSignupRequestDto;
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
 import com.example.modiraa.loginAndRegister.dto.LoginIdCheckDto;
 import com.example.modiraa.loginAndRegister.dto.SignupRequestDto;
-import com.example.modiraa.loginAndRegister.dto.SocialSignupRequestDto;
 import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.loginAndRegister.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,13 +1,13 @@
 package com.example.modiraa.loginAndRegister.controller;
 
-import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
-import com.example.modiraa.loginAndRegister.dto.LoginIdCheckDto;
-import com.example.modiraa.loginAndRegister.dto.SignupRequestDto;
 import com.example.modiraa.loginAndRegister.dto.SocialSignupRequestDto;
-import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.loginAndRegister.service.KakaoService;
 import com.example.modiraa.loginAndRegister.service.S3Uploader;
 import com.example.modiraa.loginAndRegister.service.UserService;
+import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
+import com.example.modiraa.loginAndRegister.dto.LoginIdCheckDto;
+import com.example.modiraa.loginAndRegister.dto.SignupRequestDto;
+import com.example.modiraa.loginAndRegister.model.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

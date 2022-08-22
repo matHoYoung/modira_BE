@@ -1,31 +1,30 @@
 package com.example.modiraa.LikeAndHate.controller;
 
+import com.example.modiraa.LikeAndHate.dto.LikesAndHatesUserIdDto;
 import com.example.modiraa.LikeAndHate.service.HatesService;
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
 public class HatesController {
     private final HatesService hatesService;
 
-    // 싫어요 기능
-    @PostMapping("/api/hates/{userId}")
-    public ResponseEntity<?> userHates(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long userId) {
 
-        return hatesService.userHates(userDetails, userId);
+    // 싫어요 기능
+    @PostMapping("/api/hates")
+    public ResponseEntity<?> userHates(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody LikesAndHatesUserIdDto userId) {
+
+        return hatesService.userHates(userDetails, userId.getUserId());
     }
 
     // 싫어요 취소 기능
-    @DeleteMapping("/api/hates/{userId}")
-    public ResponseEntity<?> deletetHates(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long userId)  {
-        return hatesService.deleteHates(userDetails, userId);
+    @DeleteMapping("/api/hates")
+    public ResponseEntity<?> deletetHates(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody LikesAndHatesUserIdDto userId)  {
+        return hatesService.deleteHates(userDetails, userId.getUserId());
     }
 
 }

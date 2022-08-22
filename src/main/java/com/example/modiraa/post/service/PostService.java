@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -58,16 +56,5 @@ public class PostService {
         }
     }
 
-
-////내가 쓴 참석 모임 조회
-//    public PostsResponseDto getMyReadPost(UserDetailsImpl userDetails) {
-//        Post post = userDetails.getMember();
-//
-//        return  PostsResponseDto.builder()
-//                .
-//                .build();
-//    }
-//
-//
 
 }

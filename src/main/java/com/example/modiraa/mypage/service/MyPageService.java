@@ -25,13 +25,14 @@ public class MyPageService {
         Long score = likesRepository.likesCount(member) - hatesRepository.hatesCount(member);
 
         return UserProfileResponseDto.builder()
-                .address(null)
-                .age(null)
+                .address(member.getAddress())
+                .age(member.getAge())
                 .userProfile(member.getProfileImage())
-                .gender(null)
+                .gender(member.getGender())
                 .kakaoNickname(member.getUsername())
                 .score(score)
                 .build();
+
 
     }
 //마이프로필 조회
@@ -42,10 +43,10 @@ public class MyPageService {
         Long score = likesRepository.likesCount(member) - hatesRepository.hatesCount(member);
 
         return UserProfileResponseDto.builder()
-                .address(null)
-                .age(null)
+                .address(member.getAddress())
+                .age(member.getAge())
                 .userProfile(member.getProfileImage())
-                .gender(null)
+                .gender(member.getGender())
                 .kakaoNickname(member.getUsername())
                 .score(score)
                 .build();

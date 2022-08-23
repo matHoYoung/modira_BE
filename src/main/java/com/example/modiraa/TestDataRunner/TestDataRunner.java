@@ -19,7 +19,7 @@
 //
 //    @Override
 //    public void run(ApplicationArguments args) throws Exception {
-//        Member testMember1 = new Member("user1",passwordEncoder.encode("1234"),null, "닉네임" );
+//        Member testMember1 = new Member("박지성",passwordEncoder.encode("1234"),null, "박지성" );
 //        userRepository.save(testMember1);
 //
 //    }

@@ -56,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/**").permitAll()
                 .antMatchers("/auth/kakao/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/chat/**").permitAll()
                 .antMatchers("**").permitAll()
                 .antMatchers("/").authenticated()
                 //.antMatchers(HttpMethod.GET,"/api/contents").permitAll()  //GET 요청 허용

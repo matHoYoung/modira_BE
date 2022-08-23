@@ -2,6 +2,7 @@ package com.example.modiraa.post.model;
 
 import com.example.modiraa.loginAndRegister.model.Member;
 import lombok.*;
+import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 
@@ -65,7 +66,7 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "postimage_id")
     private PostImage postImage;
 

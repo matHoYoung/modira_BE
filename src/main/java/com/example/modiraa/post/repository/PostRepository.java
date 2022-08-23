@@ -2,6 +2,7 @@ package com.example.modiraa.post.repository;
 
 import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.post.dto.PostsResponseDto;
+import com.example.modiraa.post.dto.myPostsResponseDto;
 import com.example.modiraa.post.model.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,20 +26,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 //    Optional<Post> findByMemberOrderByIdDesc(Member member,Pageable pageable);
 // 내가 작성한 모임 조회
-    @Query("SELECT new com.example.modiraa.post.dto.PostsResponseDto(p.id, p.category, p.title, p.address, p.date, p.numberofpeople, p.menu, p.gender, p.postImage.imageurl)" +
-            "from Post p " +
+    @Query("SELECT new com.example.modiraa.post.dto.myPostsResponseDto(p.id, p.title, PI.imageurl, p.date, p.category, p.numberofpeople, p.menu, p.contents)" +
+            "from Post p left outer join PostImage PI on PI.menu=p.menu " +
             "where p .member =:member " +
             "order by p.id desc")
-    List<PostsResponseDto> MyPostRead(@Param("member")Member member, Pageable pageable);
+    List<myPostsResponseDto> MyPostRead(@Param("member")Member member, Pageable pageable);
 
-
-    //내가 참석한 모임 조회
-    @Query("SELECT new com.example.modiraa.post.dto.PostsResponseDto(p.id, p.category, p.title, p.address, p.date, p.numberofpeople, p.menu, p.gender, p.postImage.imageurl)" +
-            "from Post p  " +
-            "where p .member =:member " +
-            "order by p.id desc")
-    List<PostsResponseDto> MyJoinRead(@Param("member")Member member, Pageable pageable);
-
-
+//    //내가 참석한 모임 조회
+//    @Query("SELECT new com.example.modiraa.post.dto.PostsResponseDto(p.id, p.category, p.title, p.address, p.date, p.numberofpeople, p.menu, p.gender, p.postImage.imageurl)" +
+//            "from Post p  " +
+//            "where p .member =:member " +
+//            "order by p.id desc")
+//    List<PostsResponseDto> MyJoinRead(@Param("member")Member member, Pageable pageable);
 
 }

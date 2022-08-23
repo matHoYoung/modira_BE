@@ -7,6 +7,7 @@ import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.post.dto.PostDetailResponseDto;
 import com.example.modiraa.post.dto.PostListDto;
 import com.example.modiraa.post.dto.PostsResponseDto;
+import com.example.modiraa.post.dto.myPostsResponseDto;
 import com.example.modiraa.post.model.Post;
 import com.example.modiraa.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -139,17 +140,17 @@ public class PostReadService {
 
 
     //내가 쓴 참석 모임 조회
-    public List<PostsResponseDto> getMyReadPost(UserDetailsImpl userDetails) {
+    public List<myPostsResponseDto> getMyReadPost(UserDetailsImpl userDetails) {
         Member member = userDetails.getMember();
         Pageable pageable = PageRequest.ofSize(1);
         return postRepository.MyPostRead(member, pageable);
     }
 
-    //내가 참석한 모임 조회
-    public List<PostsResponseDto> getMyJoinPost(UserDetailsImpl userDetails) {
-        Member member = userDetails.getMember();
-        Pageable pageable = PageRequest.ofSize(1);
-        return postRepository.MyJoinRead(member, pageable);
-    }
+//    //내가 참석한 모임 조회
+//    public List<PostsResponseDto> getMyJoinPost(UserDetailsImpl userDetails) {
+//        Member member = userDetails.getMember();
+//        Pageable pageable = PageRequest.ofSize(1);
+//        return postRepository.MyJoinRead(member, pageable);
+//    }
 }
 

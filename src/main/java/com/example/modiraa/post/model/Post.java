@@ -65,7 +65,7 @@ public class Post {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "postimage_id")
     private PostImage postImage;
 

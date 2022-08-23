@@ -13,7 +13,7 @@ public class PostDetailResponseDto {
     private String category;
     private String title;
     private String contents;
-    private String address;
+    private String restaurantAddress;
     private double latitude;
     private double longitude;
     private String date;

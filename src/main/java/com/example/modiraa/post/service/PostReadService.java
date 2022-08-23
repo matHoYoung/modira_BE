@@ -35,7 +35,7 @@ public class PostReadService {
         log.info("lastId -> {}", lastId);
 
         Page<Post> posts = postRepository
-                .findAllByIdLessThanAndTitleContainingAndAddressContainsOrMenuContaining(lastId, keyword, address, pageable, keyword);
+                .findAllByIdLessThanAndAddressContainsAndTitleContaining(lastId, address, keyword, pageable);
 
         log.info("result=> {}", posts);
         log.info("result=> {}", posts.getContent());
@@ -121,7 +121,7 @@ public class PostReadService {
                 .category(post.getCategory())
                 .title(post.getTitle())
                 .contents(post.getContents())
-                .address(post.getAddress())
+                .restaurantAddress(post.getAddress())
                 .latitude(post.getLatitude())
                 .longitude(post.getLongitude())
                 .date(post.getDate())

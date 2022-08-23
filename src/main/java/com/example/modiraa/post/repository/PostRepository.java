@@ -13,7 +13,7 @@ import java.util.List;
 
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    Page<Post> findAllByIdLessThanAndTitleContainingAndAddressContainsOrMenuContaining(Long lastId, String title, String address, Pageable pageable, String menu);
+    Page<Post> findAllByIdLessThanAndAddressContainsAndTitleContaining(Long lastId, String address, String title, Pageable pageable);
     Page<Post> findAllByIdLessThanAndCategoryContains(Long lastId, String category, Pageable pageable);
 
     Page<Post> findAllByCategoryContains(String category, Pageable pageable);

@@ -38,6 +38,7 @@ public class PostService {
                 .latitude(postRequestDto.getLatitude())
                 .longitude(postRequestDto.getLongitude())
                 .date(postRequestDto.getDate())
+                .time(postRequestDto.getTime())
                 .numberofpeople(postRequestDto.getNumberOfPeople())
                 .menu(postRequestDto.getMenu())
                 .gender(postRequestDto.getGender())
@@ -62,6 +63,5 @@ public class PostService {
             throw new IllegalArgumentException("모임을 삭제할 권한이 없습니다");
         }
     }
-
 
 }

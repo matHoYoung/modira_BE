@@ -16,6 +16,7 @@ public class PostRequestDto {
     private double latitude;
     private double longitude;
     private String date;
+    private String time;
     private int numberOfPeople;
     private String menu;
     private String gender;

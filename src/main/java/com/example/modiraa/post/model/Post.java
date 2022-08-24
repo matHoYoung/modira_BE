@@ -45,6 +45,10 @@ public class Post {
     @Column(nullable = false)
     private String date;
 
+    //시간
+    @Column(nullable = false)
+    private String time;
+
     //인원 수
     @Column(nullable = false)
     private int numberofpeople;

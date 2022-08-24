@@ -55,11 +55,11 @@ public class Post {
     private String menu;
 
     //성별
-    @Column
+    @Column(nullable = false)
     private String gender;
 
     //나이대
-    @Column
+    @Column(nullable = false)
     private String age;
 
     @ManyToOne

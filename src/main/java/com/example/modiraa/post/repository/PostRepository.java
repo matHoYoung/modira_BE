@@ -26,7 +26,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 //    Optional<Post> findByMemberOrderByIdDesc(Member member,Pageable pageable);
 // 내가 작성한 모임 조회
-    @Query("SELECT new com.example.modiraa.post.dto.myPostsResponseDto(p.id, p.title, PI.imageurl, p.date, p.category, p.numberofpeople, p.menu, p.contents)" +
+    @Query("SELECT new com.example.modiraa.post.dto.myPostsResponseDto(p.id, p.title, PI.imageurl, p.menu)" +
             "from Post p left outer join PostImage PI on PI.menu=p.menu " +
             "where p .member =:member " +
             "order by p.id desc")

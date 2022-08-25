@@ -1,7 +1,6 @@
 package com.example.modiraa.post.repository;
 
 import com.example.modiraa.loginAndRegister.model.Member;
-import com.example.modiraa.post.dto.PostsResponseDto;
 import com.example.modiraa.post.dto.myPostsResponseDto;
 import com.example.modiraa.post.model.Post;
 import org.springframework.data.domain.Page;
@@ -22,7 +21,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByAddressContainingAndCategory(String address, String category, Pageable pageable);
 
 
-
     @Query(value = "SELECT * FROM Post WHERE id < :lastId AND address LIKE :address% AND (menu LIKE %:menu% OR title LIKE %:title% )",
             nativeQuery = true)
     Page<Post> selectPost(@Param("lastId") Long lastId,
@@ -32,8 +30,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                           Pageable pageable);
                           
 
-//    Optional<Post> findByMemberOrderByIdDesc(Member member,Pageable pageable);
-// 내가 작성한 모임 조회
+    // Optional<Post> findByMemberOrderByIdDesc(Member member,Pageable pageable);
+    // 내가 작성한 모임 조회
     @Query("SELECT new com.example.modiraa.post.dto.myPostsResponseDto(p.id, p.title, PI.imageurl, p.date, p.category, p.numberofpeople, p.menu, p.contents)" +
             "from Post p left outer join PostImage PI on PI.menu=p.menu " +
             "where p .member =:member " +

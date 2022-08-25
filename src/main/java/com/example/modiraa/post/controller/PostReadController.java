@@ -4,6 +4,7 @@ import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
 import com.example.modiraa.post.dto.PostDetailResponseDto;
 import com.example.modiraa.post.dto.PostListDto;
 import com.example.modiraa.post.dto.PostsResponseDto;
+import com.example.modiraa.post.dto.myPostsResponseDto;
 import com.example.modiraa.post.service.PostReadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -67,17 +68,17 @@ public class PostReadController {
 
     // 내가 작성한 모임 조회
     @GetMapping("/api/myposts")
-    public ResponseEntity<List<PostsResponseDto>> getMyReadPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+    public ResponseEntity<List<myPostsResponseDto>> getMyReadPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
 
         return ResponseEntity.status(HttpStatus.OK).body(postReadService.getMyReadPost(userDetails));
     }
 
-    // 내가 참석한 모임 조회
-    @GetMapping("/api/myrooms")
-    public ResponseEntity<List<PostsResponseDto>> getMyJoinPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
-
-        return ResponseEntity.status(HttpStatus.OK).body(postReadService.getMyJoinPost(userDetails));
-    }
+//    // 내가 참석한 모임 조회
+//    @GetMapping("/api/myrooms")
+//    public ResponseEntity<List<PostsResponseDto>> getMyJoinPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(postReadService.getMyJoinPost(userDetails));
+//    }
 
 
 }

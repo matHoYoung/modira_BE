@@ -2,6 +2,7 @@ package com.example.modiraa.post.model;
 
 import com.example.modiraa.loginAndRegister.model.Member;
 import lombok.*;
+import org.hibernate.mapping.ToOne;
 
 import javax.persistence.*;
 

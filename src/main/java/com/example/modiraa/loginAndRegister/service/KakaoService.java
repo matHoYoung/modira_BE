@@ -1,6 +1,7 @@
 package com.example.modiraa.loginAndRegister.service;
 
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
+import com.example.modiraa.loginAndRegister.dto.SocialReponseDto;
 import com.example.modiraa.loginAndRegister.model.KakaoProfile;
 import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.loginAndRegister.model.OAuthToken;
@@ -39,7 +40,7 @@ public class KakaoService {
 
 
     //카카오 사용자 로그인요청
-    public Member requestKakao(String code, HttpServletResponse response) {
+    public SocialReponseDto requestKakao(String code, HttpServletResponse response) {
         //REstTemplate을 이용해 POST방식으로 Key=value 데이터를 요청 (카카오쪽으로)
         RestTemplate rt = new RestTemplate();
 
@@ -130,7 +131,11 @@ public class KakaoService {
         if (originMember.getUsername() == null) {
             System.out.println("신규 회원입니다.");
 //            SignupKakaoUser(kakaoMember); // <-- 이 로직이 자동 로그인 입니다. 지우시면 회원가입 따로 하시면 됩니다.
-            return kakaoMember;
+            return SocialReponseDto.builder()
+                    .username("Kakaoname" + kakaoProfile.getId())
+                    .nickname(kakaoMember.getNickname())
+                    .profileImage(kakaoMember.getProfileImage())
+                    .build();
         }
 
         // kakao 로그인 처리
@@ -154,7 +159,14 @@ public class KakaoService {
         Member loginMember = userRepository.findByUsername(kakaoMember.getUsername()).orElseThrow(
                 ()-> new IllegalArgumentException("카카오 사용자가 없습니다.")
         );
-        return loginMember;
+        return SocialReponseDto.builder()
+                .id(loginMember.getId())
+                .nickname(loginMember.getNickname())
+                .profileImage(loginMember.getProfileImage())
+                .age(loginMember.getAge())
+                .gender(loginMember.getGender())
+                .address(loginMember.getAddress())
+                .build();
     }
 
     //신규 카카오 회원 강제 가입

@@ -21,12 +21,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByAddressContainingAndCategory(String address, String category, Pageable pageable);
 
 
-    @Query(value = "SELECT * FROM Post WHERE id < :lastId AND address LIKE :address% AND (menu LIKE %:menu% OR title LIKE %:title% )",
+    @Query(value = "SELECT * FROM Post WHERE id < :lastId AND address LIKE :address% AND (menu LIKE %:keyword% OR title LIKE %:keyword% )",
             nativeQuery = true)
     Page<Post> selectPost(@Param("lastId") Long lastId,
                           @Param("address") String address,
-                          @Param("menu") String menu,
-                          @Param("title") String title,
+                          @Param("keyword") String keyword,
                           Pageable pageable);
                           
 

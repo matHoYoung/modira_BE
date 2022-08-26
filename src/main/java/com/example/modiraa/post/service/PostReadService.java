@@ -35,7 +35,7 @@ public class PostReadService {
         log.info("pageable -> {}", pageable);
         log.info("lastId -> {}", lastId);
 
-        Page<Post> posts = postRepository.selectPost(lastId, address, keyword, keyword, pageable);
+        Page<Post> posts = postRepository.selectPost(lastId, address, keyword, pageable);
 
         log.info("result=> {}", posts);
         log.info("result=> {}", posts.getContent());

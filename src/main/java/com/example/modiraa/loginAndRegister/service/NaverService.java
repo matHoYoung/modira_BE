@@ -1,6 +1,7 @@
 package com.example.modiraa.loginAndRegister.service;
 
 import com.example.modiraa.loginAndRegister.auth.UserDetailsImpl;
+import com.example.modiraa.loginAndRegister.dto.SocialReponseDto;
 import com.example.modiraa.loginAndRegister.model.Member;
 import com.example.modiraa.loginAndRegister.model.NaverProfile;
 import com.example.modiraa.loginAndRegister.model.OAuthToken;
@@ -32,7 +33,7 @@ public class NaverService {
     private final KakaoService kakaoService;
 
     //naver 사용자 로그인요청
-    public Member requestNaver(String code, HttpServletResponse response) {
+    public SocialReponseDto requestNaver(String code, HttpServletResponse response) {
         RestTemplate rt = new RestTemplate();
 
         //Httpheader 오브젝트 생성
@@ -124,7 +125,11 @@ public class NaverService {
         if (originMember.getUsername() == null) {
             System.out.println("신규 회원입니다.");
 //            kakaoService.SignupKakaoUser(naverMember); //자동 회원가입
-            return naverMember;
+            return SocialReponseDto.builder()
+                    .username(naverProfile.getResponse().id)
+                    .nickname(naverProfile.getResponse().name)
+                    .profileImage(naverMember.getProfileImage())
+                    .build();
         }
 
         // kakao 로그인 처리
@@ -149,6 +154,13 @@ public class NaverService {
         Member loginMember = userRepository.findByUsername(naverMember.getUsername()).orElseThrow(
                 ()-> new IllegalArgumentException("네이버 사용자가 없습니다.")
         );
-        return loginMember;
+        return SocialReponseDto.builder()
+                .id(loginMember.getId())
+                .nickname(loginMember.getNickname())
+                .profileImage(loginMember.getProfileImage())
+                .age(loginMember.getAge())
+                .gender(loginMember.getGender())
+                .address(loginMember.getAddress())
+                .build();
     }
 }

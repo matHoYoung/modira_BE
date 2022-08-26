@@ -1,5 +1,6 @@
 package com.example.modiraa.loginAndRegister.controller;
 
+import com.example.modiraa.loginAndRegister.dto.SocialReponseDto;
 import com.example.modiraa.loginAndRegister.dto.SocialSignupRequestDto;
 import com.example.modiraa.loginAndRegister.service.KakaoService;
 import com.example.modiraa.loginAndRegister.service.NaverService;
@@ -59,13 +60,13 @@ public class UserController {
 
     //카카오 소셜 로그인
     @GetMapping("/auth/kakao/callback")
-    public @ResponseBody Member kakaoCalback(String code, HttpServletResponse response) {      //ResponseBody -> Data를 리턴해주는 컨트롤러 함수
+    public @ResponseBody SocialReponseDto kakaoCalback(String code, HttpServletResponse response) {      //ResponseBody -> Data를 리턴해주는 컨트롤러 함수
         return kakaoService.requestKakao(code, response);
     }
 
     //네이버 소셜 로그인
     @GetMapping("/login/ouath2/code/naver")
-    public @ResponseBody Member naverCalback(String code, HttpServletResponse response) {      //ResponseBody -> Data를 리턴해주는 컨트롤러 함수
+    public @ResponseBody SocialReponseDto naverCalback(String code, HttpServletResponse response) {      //ResponseBody -> Data를 리턴해주는 컨트롤러 함수
         return naverService.requestNaver(code, response);
     }
 

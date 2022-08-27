@@ -29,7 +29,7 @@ public class MyPageService {
                 .age(member.getAge())
                 .userProfile(member.getProfileImage())
                 .gender(member.getGender())
-                .kakaoNickname(member.getUsername())
+                .nickname(member.getNickname())
                 .score(score)
                 .build();
 
@@ -47,7 +47,7 @@ public class MyPageService {
                 .age(member.getAge())
                 .userProfile(member.getProfileImage())
                 .gender(member.getGender())
-                .kakaoNickname(member.getUsername())
+                .nickname(member.getNickname())
                 .score(score)
                 .build();
     }

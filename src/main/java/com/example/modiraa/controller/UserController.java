@@ -35,17 +35,6 @@ public class UserController {
         return s3Uploader.upload(multipartFile, "static");
     }
 
-    // 회원 가입 요청 처리
-    @PostMapping("/api/user/signup")
-    public String registerUser(@Valid @RequestBody SignupRequestDto requestDto) throws IOException {
-        String res = userService.registerUser(requestDto);
-        if (res.equals("")) {
-            return "회원가입 성공";
-        } else {
-            return res;
-        }
-    }
-
     // 소셜 회원 가입 요청 처리
     @PostMapping("/api/user/register")
     public String registerSocialUser(@Valid @ModelAttribute SocialSignupRequestDto requestDto) throws IOException {

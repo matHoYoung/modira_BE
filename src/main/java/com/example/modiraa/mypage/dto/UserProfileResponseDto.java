@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class UserProfileResponseDto {
-    private String kakaoNickname;
+    private String nickname;
     private String userProfile;
     private String age;
     private String address;

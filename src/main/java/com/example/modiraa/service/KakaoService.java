@@ -52,10 +52,10 @@ public class KakaoService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         // 실제 코드를 쓸 시 아래의 값들을 변수화 해서 쓰는 것이 더 좋다.
         params.add("grant_type", "authorization_code");
-//        params.add("client_id", "ddb938f8fed6079e90564fca875e2903");
-        params.add("client_id", "811b32c1569bba53dd9f8984c4dd9ac3");
-//        params.add("redirect_uri", "http://localhost:3000/auth/kakao/callback");
-        params.add("redirect_uri", "http://localhost:8080/auth/kakao/callback");
+        params.add("client_id", "ddb938f8fed6079e90564fca875e2903");
+//        params.add("client_id", "811b32c1569bba53dd9f8984c4dd9ac3");
+        params.add("redirect_uri", "http://localhost:3000/auth/kakao/callback");
+//        params.add("redirect_uri", "http://localhost:8080/auth/kakao/callback");
         params.add("code", code);
 
         //HttpHeader와 HttpBdoy를 하나의 오브젝트에 담기
@@ -130,7 +130,7 @@ public class KakaoService {
 
         if (originMember.getUsername() == null) {
             System.out.println("신규 회원입니다.");
-            SignupKakaoUser(kakaoMember); // <-- 이 로직이 자동 로그인 입니다. 지우시면 회원가입 따로 하시면 됩니다.
+//            SignupKakaoUser(kakaoMember); // <-- 이 로직이 자동 로그인 입니다. 지우시면 회원가입 따로 하시면 됩니다.
             return SocialReponseDto.builder()
                     .username("Kakaoname" + kakaoProfile.getId())
                     .nickname(kakaoMember.getNickname())

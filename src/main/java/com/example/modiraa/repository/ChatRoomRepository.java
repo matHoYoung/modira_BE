@@ -3,6 +3,7 @@ package com.example.modiraa.repository;
 import com.example.modiraa.model.ChatRoom;
 import com.example.modiraa.pubsub.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RequiredArgsConstructor
 @Repository
 public class ChatRoomRepository {
@@ -45,9 +47,10 @@ public class ChatRoomRepository {
     /**
      * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
      */
-    public ChatRoom createChatRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
+    public ChatRoom createChatRoom() {
+        ChatRoom chatRoom = ChatRoom.create();
         opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
+        log.info("creatRoomName:{}" + chatRoom.getRoomId());
         return chatRoom;
     }
 

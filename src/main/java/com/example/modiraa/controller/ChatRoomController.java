@@ -3,14 +3,15 @@ package com.example.modiraa.controller;
 import com.example.modiraa.model.ChatRoom;
 import com.example.modiraa.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/chat")
 public class ChatRoomController {
 
@@ -19,7 +20,7 @@ public class ChatRoomController {
     // 채팅 리스트 화면
     @GetMapping("/room")
     public String rooms(Model model) {
-        return "/chat/room";
+        return model.toString();
     }
 
     // 모든 채팅방 목록 반환
@@ -33,14 +34,15 @@ public class ChatRoomController {
     @PostMapping("/room")
     @ResponseBody
     public ChatRoom createRoom(@RequestParam String name) {
-        return chatRoomRepository.createChatRoom(name);
+        log.info("creatRoomName:{}" + name);
+        return chatRoomRepository.createChatRoom();
     }
 
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {
         model.addAttribute("roomId", roomId);
-        return "/chat/roomdetail";
+        return roomId;
     }
 
     // 특정 채팅방 조회

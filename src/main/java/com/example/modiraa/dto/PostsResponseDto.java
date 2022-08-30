@@ -20,5 +20,6 @@ public class PostsResponseDto {
     private int numberOfPeople;
     private String menu;
     private String gender;
+    private String age;
     private String menuForImage;
 }

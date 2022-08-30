@@ -106,6 +106,7 @@ public class PostReadService {
                         .numberOfPeople(p.getNumberofpeople())
                         .menu(p.getMenu())
                         .gender(p.getGender())
+                        .age(p.getAge())
                         .menuForImage(p.getPostImage().getImageurl())
                         .build()
         );

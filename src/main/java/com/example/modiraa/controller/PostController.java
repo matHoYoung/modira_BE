@@ -1,9 +1,10 @@
 package com.example.modiraa.controller;
 
-import com.example.modiraa.repository.ChatRoomRepository;
-import com.example.modiraa.service.PostService;
-import com.example.modiraa.dto.PostRequestDto;
 import com.example.modiraa.auth.UserDetailsImpl;
+import com.example.modiraa.dto.PostRequestDto;
+import com.example.modiraa.model.ChatRoom;
+import com.example.modiraa.service.ChatRoomService;
+import com.example.modiraa.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +16,15 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomService chatRoomService;
 
     // 모임 생성
     @PostMapping("/api/post")
     public ResponseEntity<String> createPost(@RequestBody PostRequestDto postRequestDto,
                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
-        chatRoomRepository.createChatRoom();
-        postService.createPost(username, postRequestDto);
+        ChatRoom chatRoom = chatRoomService.createChatRoom();
+        postService.createPost(username, postRequestDto, chatRoom);
         return ResponseEntity.status(HttpStatus.CREATED).body("모임 생성 완료");
     }
 

@@ -80,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // 수정 필요
-        configuration.addAllowedOrigin("http://weibo-clone.s3-website.ap-northeast-2.amazonaws.com");
+        configuration.addAllowedOrigin("http://modira.co.kr");
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");

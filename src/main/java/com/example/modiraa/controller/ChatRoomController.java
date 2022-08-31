@@ -1,7 +1,8 @@
 package com.example.modiraa.controller;
 
 import com.example.modiraa.model.ChatRoom;
-import com.example.modiraa.repository.ChatRoomRepository;
+import com.example.modiraa.repository.ChattingRoomRepository;
+import com.example.modiraa.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
@@ -15,7 +16,8 @@ import java.util.List;
 @RequestMapping("/chat")
 public class ChatRoomController {
 
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChattingRoomRepository chattingRoomRepository;
+    private final ChatRoomService chatRoomService;
 
     // 채팅 리스트 화면
     @GetMapping("/room")
@@ -24,10 +26,17 @@ public class ChatRoomController {
     }
 
     // 모든 채팅방 목록 반환
+    @GetMapping("/room/list")
+    @ResponseBody
+    public List<ChatRoom> roomList() {
+        return chatRoomService.findAllRoom();
+    }
+
+    // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
     @ResponseBody
     public List<ChatRoom> room() {
-        return chatRoomRepository.findAllRoom();
+        return chattingRoomRepository.findAllRoom();
     }
 
     // 채팅방 생성
@@ -35,7 +44,7 @@ public class ChatRoomController {
     @ResponseBody
     public ChatRoom createRoom(@RequestParam String name) {
         log.info("creatRoomName:{}" + name);
-        return chatRoomRepository.createChatRoom();
+        return chattingRoomRepository.createChatRoom();
     }
 
     // 채팅방 입장 화면
@@ -49,6 +58,6 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId) {
-        return chatRoomRepository.findRoomById(roomId);
+        return chattingRoomRepository.findRoomById(roomId);
     }
 }

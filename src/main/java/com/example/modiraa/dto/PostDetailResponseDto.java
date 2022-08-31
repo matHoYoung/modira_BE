@@ -27,4 +27,5 @@ public class PostDetailResponseDto {
     private String writerGender;
     private String writerAge;
     private Long writerScore;
+    private String uuid;
 }

@@ -137,6 +137,7 @@ public class PostReadService {
                 .writerGender(post.getMember().getGender())
                 .writerAge(post.getMember().getAge())
                 .writerScore(score)
+                .uuid(post.getChatRoom().getUuid())
                 .build();
     }
 

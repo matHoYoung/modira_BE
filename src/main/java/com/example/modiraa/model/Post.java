@@ -72,4 +72,8 @@ public class Post {
     @JoinColumn(name = "postimage_id")
     private PostImage postImage;
 
+    @OneToOne
+    @JoinColumn(name="room_id")
+    private ChatRoom chatRoom;
+
 }

@@ -2,6 +2,7 @@ package com.example.modiraa.service;
 
 import com.example.modiraa.dto.PostRequestDto;
 import com.example.modiraa.auth.UserDetailsImpl;
+import com.example.modiraa.model.ChatRoom;
 import com.example.modiraa.model.Member;
 import com.example.modiraa.repository.UserRepository;
 import com.example.modiraa.model.Post;
@@ -24,7 +25,7 @@ public class PostService {
     private final PostImageRepository postImageRepository;
 
     // 모임 생성
-    public void createPost(String username, PostRequestDto postRequestDto) {
+    public void createPost(String username, PostRequestDto postRequestDto, ChatRoom chatRoom) {
         Member member = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("다시 로그인해 주세요."));
 
@@ -45,6 +46,7 @@ public class PostService {
                 .age(postRequestDto.getAge())
                 .member(member)
                 .postImage(postImage)
+                .chatRoom(chatRoom)
                 .build();
 
         postRepository.save(post);

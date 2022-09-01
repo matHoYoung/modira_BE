@@ -37,13 +37,13 @@ public class ChatRoomService {
     //채팅방생성
     @Transactional
     public ChatRoom createChatRoom() {
-        ChatRoom chatRoom = ChatRoom.create();
+        String uuid = UUID.randomUUID().toString();
+        ChatRoom chatRoom = new ChatRoom(uuid);
+
         opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getUuid(), chatRoom);
 
-        String uuid = UUID.randomUUID().toString();
-        ChatRoom chatRooms = new ChatRoom(uuid);
-        chatRoomRepository.save(chatRooms);
-        return chatRooms;
+        chatRoomRepository.save(chatRoom);
+        return chatRoom;
     }
 
     // 채팅방 리스트

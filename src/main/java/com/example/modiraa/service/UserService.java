@@ -2,10 +2,9 @@ package com.example.modiraa.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.modiraa.dto.SocialSignupRequestDto;
 import com.example.modiraa.auth.UserDetailsImpl;
 import com.example.modiraa.dto.LoginIdCheckDto;
-import com.example.modiraa.dto.SignupRequestDto;
+import com.example.modiraa.dto.SocialSignupRequestDto;
 import com.example.modiraa.exception.CustomException;
 import com.example.modiraa.exception.ErrorCode;
 import com.example.modiraa.model.Member;
@@ -18,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +37,6 @@ public class UserService {
         String age = requestDto.getAge();
         String gender = requestDto.getGender();
         String address = requestDto.getAddress();
-        String pattern = "^[a-zA-Z0-9]*$";
 
         System.out.println(username);
         System.out.println(nickname);
@@ -78,6 +75,8 @@ public class UserService {
         if (setProfileImage != null) {
             String profileUrl = s3Uploader.upload(requestDto.getUserProfileImage(), "profile");
             member.setProfileImage(profileUrl);
+        } else {
+            throw new CustomException(ErrorCode.IMAGE_CHECK_CODE);
         }
 
         userRepository.save(member);

@@ -63,23 +63,22 @@
             this.roomId = localStorage.getItem('wschat.roomId');
             this.roomName = localStorage.getItem('wschat.roomName');
             var _this = this;
-            axios.get('/chat/user').then(response => {
-                _this.token = response.data.token;
-                ws.connect({"token":_this.token}, function(frame) {
-                    ws.subscribe("/sub/chat/room/"+_this.roomId, function(message) {
-                        var recv = JSON.parse(message.body);
-                        _this.recvMessage(recv);
-                    });
-                    _this.sendMessage('ENTER');
-                }, function(error) {
-                    alert("서버 연결에 실패 하였습니다. 다시 접속해 주십시요.");
-                    location.href="/chat/room";
+
+            ws.connect({"Authorization":""}, function(frame) {
+                ws.subscribe("/sub/chat/room/"+_this.roomId, function(message) {
+                    var recv = JSON.parse(message.body);
+                    _this.recvMessage(recv);
                 });
+                _this.sendMessage('ENTER');
+            }, function(error) {
+                alert("서버 연결에 실패 하였습니다. 다시 접속해 주십시요.");
+                location.href="/chat/room";
             });
         },
         methods: {
             sendMessage: function(type) {
-                ws.send("/pub/chat/message", {"Authorization":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3PthqDtgbAiLCJleHAiOjE2NjIwMjQzMTQsInVzZXJuYW1lIjoiS2FrYW9uYW1lMjM4NzM3NzA4OCJ9.sjbYZUpTZbZp2Z8E1o5etWnI_WJjgtqxiSCWER9aEhO7AwTDmWZxXzm7z1_d5hvq6_LRmvQWcfbM-U5RWQl6LQ"}, JSON.stringify({type:type, roomId:this.roomId, message:this.message}));
+                ws.send("/pub/chat/message", {"Authorization":""},
+                    JSON.stringify({type:type, roomId:this.roomId, message:this.message}));
                 this.message = '';
             },
             recvMessage: function(recv) {

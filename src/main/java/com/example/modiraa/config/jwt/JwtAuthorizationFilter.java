@@ -93,8 +93,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         }
 
         return "실패";
-
-        //return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token).getBody().getSubject();
     }
 
     public boolean validateToken(String jwt) {

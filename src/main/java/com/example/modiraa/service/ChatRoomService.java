@@ -40,7 +40,7 @@ public class ChatRoomService {
         String uuid = UUID.randomUUID().toString();
         ChatRoom chatRoom = new ChatRoom(uuid);
 
-        opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getUuid(), chatRoom);
+        opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
 
         chatRoomRepository.save(chatRoom);
         return chatRoom;

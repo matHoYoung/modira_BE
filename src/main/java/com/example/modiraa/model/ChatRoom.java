@@ -24,18 +24,21 @@ public class ChatRoom implements Serializable {
     private Long id;
 
     @Column
-    private String uuid;
+    private String roomId;
+
+    @Column
+    private long userCount; //채팅방 인원 수
 
     @OneToOne(mappedBy = "chatRoom")
     private Post post;
 
     public static ChatRoom create() {
         ChatRoom chatRoom = new ChatRoom();
-        chatRoom.uuid = UUID.randomUUID().toString();
+        chatRoom.roomId = UUID.randomUUID().toString();
         return chatRoom;
     }
 
     public ChatRoom(String uuid) {
-        this.uuid = uuid;
+        this.roomId = uuid;
     }
 }

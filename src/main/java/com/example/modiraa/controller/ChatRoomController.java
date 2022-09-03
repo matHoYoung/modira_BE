@@ -36,14 +36,16 @@ public class ChatRoomController {
     @GetMapping("/rooms")
     @ResponseBody
     public List<ChatRoom> room() {
-        return chattingRoomRepository.findAllRoom();
+        List<ChatRoom> chatRooms = chattingRoomRepository.findAllRoom();
+        chatRooms.stream().forEach(room -> room.setUserCount(chattingRoomRepository.getUserCount(room.getRoomId())));
+        return chatRooms;
     }
 
     // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
     public ChatRoom createRoom(@RequestParam String name) {
-        log.info("creatRoomName:{}" + name);
+        log.info("creatRoomName: {}", name);
         return chattingRoomRepository.createChatRoom();
     }
 

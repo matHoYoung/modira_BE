@@ -82,6 +82,8 @@ public class PostReadService {
 
         String memberAddress = userDetails.getMember().getAddress();
 
+        log.info("memberAddress: {}", memberAddress);
+
         Page<Post> postAll = postRepository.findAllByAddressContaining(memberAddress, pageable);
         Page<Post> postGoldenBell = postRepository.findAllByAddressContainingAndCategory(memberAddress, "골든벨", pageable);
         Page<Post> postDutchPay = postRepository.findAllByAddressContainingAndCategory(memberAddress,"N빵", pageable);
@@ -137,7 +139,7 @@ public class PostReadService {
                 .writerGender(post.getMember().getGender())
                 .writerAge(post.getMember().getAge())
                 .writerScore(score)
-                .uuid(post.getChatRoom().getUuid())
+                //.uuid(post.getChatRoom().getUuid())
                 .build();
     }
 

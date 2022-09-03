@@ -18,10 +18,11 @@
 <div class="container" id="app" v-cloak>
     <div class="row">
         <div class="col-md-6">
-            <h3>{{roomName}}</h3>
+            <h4>{{roomName}} <span class="badge badge-info badge-pill">{{userCount}}</span></h4>
         </div>
         <div class="col-md-6 text-right">
             <a class="btn btn-primary btn-sm" href="/logout">로그아웃</a>
+            <a class="btn btn-info btn-sm" href="/chat/room">채팅방 나가기</a>
         </div>
     </div>
     <div class="input-group">
@@ -57,18 +58,22 @@
             roomName: '',
             message: '',
             messages: [],
-            token: ''
+            Authorization: '',
+            userCount: 0
         },
         created() {
             this.roomId = localStorage.getItem('wschat.roomId');
             this.roomName = localStorage.getItem('wschat.roomName');
             var _this = this;
 
-            ws.connect({"Authorization":""}, function(frame) {
+            ws.connect({"Authorization":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3PthqDtgbAiLCJleHAiOjE2NjIxODY3NDcsInVzZXJuYW1lIjoiS2FrYW9uYW1lMjM4NzM3NzA4OCJ9.Rxaf4usRR4BOiBt4xJr1OvwE_dPfxO4TUlGGho7YCifdVQOgtm8u8Qs00Q_LO936_DLow_HPJ-eKbY2hjrs7OQ"}, function(frame) {
+                console.log("connect 완료");
                 ws.subscribe("/sub/chat/room/"+_this.roomId, function(message) {
+                    console.log("구독이 안되는건가?");
                     var recv = JSON.parse(message.body);
+                    console.log(recv);
                     _this.recvMessage(recv);
-                });
+                }, {"Authorization":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3PthqDtgbAiLCJleHAiOjE2NjIxODY3NDcsInVzZXJuYW1lIjoiS2FrYW9uYW1lMjM4NzM3NzA4OCJ9.Rxaf4usRR4BOiBt4xJr1OvwE_dPfxO4TUlGGho7YCifdVQOgtm8u8Qs00Q_LO936_DLow_HPJ-eKbY2hjrs7OQ"});
                 _this.sendMessage('ENTER');
             }, function(error) {
                 alert("서버 연결에 실패 하였습니다. 다시 접속해 주십시요.");
@@ -77,11 +82,12 @@
         },
         methods: {
             sendMessage: function(type) {
-                ws.send("/pub/chat/message", {"Authorization":""},
+                ws.send("/pub/chat/message", {"Authorization":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3PthqDtgbAiLCJleHAiOjE2NjIxODY3NDcsInVzZXJuYW1lIjoiS2FrYW9uYW1lMjM4NzM3NzA4OCJ9.Rxaf4usRR4BOiBt4xJr1OvwE_dPfxO4TUlGGho7YCifdVQOgtm8u8Qs00Q_LO936_DLow_HPJ-eKbY2hjrs7OQ"},
                     JSON.stringify({type:type, roomId:this.roomId, message:this.message}));
                 this.message = '';
             },
             recvMessage: function(recv) {
+                this.userCount = recv.userCount;
                 this.messages.unshift({"type":recv.type,"sender":recv.sender,"message":recv.message})
             }
         }

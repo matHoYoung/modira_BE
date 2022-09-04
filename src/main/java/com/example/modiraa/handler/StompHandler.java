@@ -3,8 +3,8 @@ package com.example.modiraa.handler;
 import com.example.modiraa.config.jwt.JwtAuthorizationFilter;
 import com.example.modiraa.model.ChatMessage;
 import com.example.modiraa.model.Member;
-import com.example.modiraa.repository.ChattingRoomRepository;
 import com.example.modiraa.repository.UserRepository;
+import com.example.modiraa.service.ChatRoomService;
 import com.example.modiraa.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,46 +25,45 @@ import java.util.Optional;
 public class StompHandler implements ChannelInterceptor {
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
-    private final ChattingRoomRepository chattingRoomRepository;
-    private final ChatService chatService;
+    private final ChatRoomService chatRoomService;
     private final UserRepository userRepository;
+    private final ChatService chatService;
 
-    // websocket을 통해 들어온 요청이 처리 되기전 실행된다.
+
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+
         // websocket 연결시 헤더의 jwt token 검증
         if (StompCommand.CONNECT == accessor.getCommand()) {
+
             String jwtToken = accessor.getFirstNativeHeader("Authorization");
             log.info("CONNECT: {}", jwtToken);
             jwtAuthorizationFilter.validateToken(jwtToken);
-        } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) { // 채팅룸 구독요청
+
+        } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
 
             // header정보에서 구독 destination정보를 얻고, roomId를 추출한다.
             String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
-
-            //토큰 가져옴
             String jwtToken = accessor.getFirstNativeHeader("Authorization");
 
             Member member;
             if (jwtToken != null) {
                 //토큰으로 user 가져옴
                 member = userRepository.findByNickname(jwtAuthorizationFilter.getUserNameFromJwt(jwtToken), Member.class)
-                        .orElseThrow(()->new IllegalArgumentException("user 가 존재하지 않습니다."));
+                        .orElseThrow(()->new IllegalArgumentException("member 가 존재하지 않습니다."));
             }else {
                 throw new IllegalArgumentException("유효하지 않은 token 입니다.");
             }
 
             Long memberId = member.getId();
-            log.info("getNickname: {}", member.getNickname());
 
-            chattingRoomRepository.setUserEnterInfo(memberId, roomId);
+            chatRoomService.setUserEnterInfo(memberId, roomId);
 
             // 채팅방의 인원수를 +1한다.
-            chattingRoomRepository.plusUserCount(roomId);
+            chatRoomService.plusUserCount(roomId);
 
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
-            //String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
             chatService.sendChatMessage(ChatMessage.builder()
                     .type(ChatMessage.MessageType.ENTER)
                     .roomId(roomId)
@@ -72,21 +71,22 @@ public class StompHandler implements ChannelInterceptor {
                     .build());
 
             log.info("SUBSCRIBED {}, {}", member.getNickname(), roomId);
+
         } else if (StompCommand.DISCONNECT == accessor.getCommand()) { // Websocket 연결 종료
 
             // 연결이 종료된 클라이언트 sesssionId로 채팅방 id를 얻는다.
             String sessionId = (String) message.getHeaders().get("simpSessionId");
-            String roomId = chattingRoomRepository.getUserEnterRoomId(sessionId);
+            String roomId = chatRoomService.getUserEnterRoomId(sessionId);
 
             // 채팅방의 인원수를 -1한다.
-            chattingRoomRepository.minusUserCount(roomId);
+            chatRoomService.minusUserCount(roomId);
 
             // 클라이언트 퇴장 메시지를 채팅방에 발송한다.(redis publish)
             String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
             chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.QUIT).roomId(roomId).sender(name).build());
 
             // 퇴장한 클라이언트의 roomId 맵핑 정보를 삭제한다.
-            chattingRoomRepository.removeUserEnterInfo(sessionId);
+            chatRoomService.removeUserEnterInfo(sessionId);
 
             log.info("DISCONNECTED {}, {}", sessionId, roomId);
         }

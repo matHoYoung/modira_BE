@@ -66,14 +66,12 @@
             this.roomName = localStorage.getItem('wschat.roomName');
             var _this = this;
 
-            ws.connect({"Authorization":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3PthqDtgbAiLCJleHAiOjE2NjIxODY3NDcsInVzZXJuYW1lIjoiS2FrYW9uYW1lMjM4NzM3NzA4OCJ9.Rxaf4usRR4BOiBt4xJr1OvwE_dPfxO4TUlGGho7YCifdVQOgtm8u8Qs00Q_LO936_DLow_HPJ-eKbY2hjrs7OQ"}, function(frame) {
-                console.log("connect 완료");
+            ws.connect({"Authorization":""}, function(frame) {
                 ws.subscribe("/sub/chat/room/"+_this.roomId, function(message) {
-                    console.log("구독이 안되는건가?");
                     var recv = JSON.parse(message.body);
                     console.log(recv);
                     _this.recvMessage(recv);
-                }, {"Authorization":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3PthqDtgbAiLCJleHAiOjE2NjIxODY3NDcsInVzZXJuYW1lIjoiS2FrYW9uYW1lMjM4NzM3NzA4OCJ9.Rxaf4usRR4BOiBt4xJr1OvwE_dPfxO4TUlGGho7YCifdVQOgtm8u8Qs00Q_LO936_DLow_HPJ-eKbY2hjrs7OQ"});
+                }, {"Authorization":""});
                 _this.sendMessage('ENTER');
             }, function(error) {
                 alert("서버 연결에 실패 하였습니다. 다시 접속해 주십시요.");
@@ -82,7 +80,7 @@
         },
         methods: {
             sendMessage: function(type) {
-                ws.send("/pub/chat/message", {"Authorization":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjb3PthqDtgbAiLCJleHAiOjE2NjIxODY3NDcsInVzZXJuYW1lIjoiS2FrYW9uYW1lMjM4NzM3NzA4OCJ9.Rxaf4usRR4BOiBt4xJr1OvwE_dPfxO4TUlGGho7YCifdVQOgtm8u8Qs00Q_LO936_DLow_HPJ-eKbY2hjrs7OQ"},
+                ws.send("/pub/chat/message", {"Authorization":""},
                     JSON.stringify({type:type, roomId:this.roomId, message:this.message}));
                 this.message = '';
             },

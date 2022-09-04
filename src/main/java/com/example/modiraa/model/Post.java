@@ -73,7 +73,7 @@ public class Post {
     private PostImage postImage;
 
     @OneToOne
-    @JoinColumn(name="room_id")
+    @JoinColumn(name="chatroom_id")
     private ChatRoom chatRoom;
 
 }

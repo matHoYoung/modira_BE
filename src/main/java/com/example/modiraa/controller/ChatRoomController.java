@@ -1,8 +1,15 @@
 package com.example.modiraa.controller;
 
+import com.example.modiraa.auth.UserDetailsImpl;
+import com.example.modiraa.model.ChatMessage;
 import com.example.modiraa.model.ChatRoom;
+import com.example.modiraa.service.ChatMessageService;
 import com.example.modiraa.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +20,7 @@ import java.util.List;
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
+    private final ChatMessageService chatMessageService;
 
     // 모든 채팅방 목록 반환
     @GetMapping("/rooms")
@@ -26,6 +34,12 @@ public class ChatRoomController {
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(@PathVariable String roomId) {
         return roomId;
+    }
+
+    // 해당 채팅방의 메세지 조회
+    @GetMapping("/messages/{roomId}")
+    public Page<ChatMessage> getRoomMessage(@PathVariable String roomId, @PageableDefault Pageable pageable) {
+        return chatMessageService.getChatMessageByRoomId(roomId, pageable);
     }
 
 }

@@ -92,7 +92,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             return userDetails.getMember().getNickname();
         }
 
-        return "실패";
+        throw new IllegalArgumentException("회원이 아닙니다.");
     }
 
     public boolean validateToken(String jwt) {

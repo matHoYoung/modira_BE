@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -31,12 +30,6 @@ public class ChatRoom implements Serializable {
 
     @OneToOne(mappedBy = "chatRoom")
     private Post post;
-
-    public static ChatRoom create() {
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.roomId = UUID.randomUUID().toString();
-        return chatRoom;
-    }
 
     public ChatRoom(String uuid) {
         this.roomId = uuid;

@@ -4,8 +4,8 @@ import com.example.modiraa.config.jwt.JwtAuthorizationFilter;
 import com.example.modiraa.model.ChatMessage;
 import com.example.modiraa.model.Member;
 import com.example.modiraa.repository.UserRepository;
+import com.example.modiraa.service.ChatMessageService;
 import com.example.modiraa.service.ChatRoomService;
-import com.example.modiraa.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
@@ -27,7 +27,7 @@ public class StompHandler implements ChannelInterceptor {
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final ChatRoomService chatRoomService;
     private final UserRepository userRepository;
-    private final ChatService chatService;
+    private final ChatMessageService chatMessageService;
 
 
     @Override
@@ -44,7 +44,7 @@ public class StompHandler implements ChannelInterceptor {
         } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
 
             // header정보에서 구독 destination정보를 얻고, roomId를 추출한다.
-            String roomId = chatService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
+            String roomId = chatMessageService.getRoomId(Optional.ofNullable((String) message.getHeaders().get("simpDestination")).orElse("InvalidRoomId"));
             String jwtToken = accessor.getFirstNativeHeader("Authorization");
 
             Member member;
@@ -64,7 +64,7 @@ public class StompHandler implements ChannelInterceptor {
             chatRoomService.plusUserCount(roomId);
 
             // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
-            chatService.sendChatMessage(ChatMessage.builder()
+            chatMessageService.sendChatMessage(ChatMessage.builder()
                     .type(ChatMessage.MessageType.ENTER)
                     .roomId(roomId)
                     .sender(member.getNickname())
@@ -83,7 +83,7 @@ public class StompHandler implements ChannelInterceptor {
 
             // 클라이언트 퇴장 메시지를 채팅방에 발송한다.(redis publish)
             String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
-            chatService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.QUIT).roomId(roomId).sender(name).build());
+            chatMessageService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.QUIT).roomId(roomId).sender(name).build());
 
             // 퇴장한 클라이언트의 roomId 맵핑 정보를 삭제한다.
             chatRoomService.removeUserEnterInfo(sessionId);

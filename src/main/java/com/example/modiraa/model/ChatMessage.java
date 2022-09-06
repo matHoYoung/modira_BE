@@ -1,5 +1,7 @@
 package com.example.modiraa.model;
 
+import com.example.modiraa.dto.ChatMessageRequestDto;
+import com.example.modiraa.service.UserService;
 import lombok.*;
 
 import javax.persistence.*;
@@ -43,5 +45,14 @@ public class ChatMessage {
         this.sender = sender;
         this.message = message;
         this.userCount = userCount;
+    }
+
+    @Builder
+    public ChatMessage(ChatMessageRequestDto chatMessageRequestDto, UserService userService) {
+        this.type = chatMessageRequestDto.getType();
+        this.roomId = chatMessageRequestDto.getRoomId();
+        this.sender =  userService.getMember(chatMessageRequestDto.getSender()).getNickname();
+        this.message = chatMessageRequestDto.getMessage();
+        this.userCount = chatMessageRequestDto.getUserCount();
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class ChatService {
+public class ChatMessageService {
 
     private final ChannelTopic channelTopic;
     private final RedisTemplate redisTemplate;
@@ -22,20 +22,21 @@ public class ChatService {
         if (lastIndex != -1)
             return destination.substring(lastIndex + 1);
         else
-            return "";
+            throw new IllegalArgumentException("lastIndex 오류입니다.");
     }
 
     // 채팅방에 메시지 발송
     public void sendChatMessage(ChatMessage chatMessage) {
+
+        // 채팅방 인원수 세팅
         chatMessage.setUserCount(chatRoomService.getUserCount(chatMessage.getRoomId()));
+
         if (ChatMessage.MessageType.ENTER.equals(chatMessage.getType())) {
             chatMessage.setMessage(chatMessage.getSender() + "님이 방에 입장했습니다.");
-            //chatMessage.setSender("[알림]");
         } else if (ChatMessage.MessageType.QUIT.equals(chatMessage.getType())) {
             chatMessage.setMessage(chatMessage.getSender() + "님이 방에서 나갔습니다.");
-            //chatMessage.setSender("[알림]");
         }
-        log.info("sendMessage: {}", chatMessage.getMessage());
+        log.info("sender, sendMessage: {}, {}", chatMessage.getSender(), chatMessage.getMessage());
         redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
     }
 

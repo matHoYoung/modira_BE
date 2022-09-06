@@ -85,8 +85,8 @@ public class PostReadService {
         log.info("memberAddress: {}", memberAddress);
 
         Page<Post> postAll = postRepository.findAllByAddressContaining(memberAddress, pageable);
-        Page<Post> postGoldenBell = postRepository.findAllByAddressContainingAndCategory(memberAddress, "골든벨", pageable);
-        Page<Post> postDutchPay = postRepository.findAllByAddressContainingAndCategory(memberAddress,"N빵", pageable);
+        Page<Post> postGoldenBell = postRepository.findAllByAddressContainingAndCategory(memberAddress, "방장이 쏜다! 골든벨", pageable);
+        Page<Post> postDutchPay = postRepository.findAllByAddressContainingAndCategory(memberAddress,"다같이 내자! N빵", pageable);
 
         PostListDto postListDto = new PostListDto();
 

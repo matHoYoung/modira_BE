@@ -18,12 +18,10 @@ public class RedisSubscriber {
     private final ChatMessageRepository chatMessageRepository;
 
 
-    // Redis에서 메시지가 발행(publish)되면 대기하고 있던 Redis Subscriber가 해당 메시지를 받아 처리한다.
+    // 클라이언트에서 메세지가 도착하면 해당 메세지를 messagingTemplate 으로 컨버팅하고 다른 구독자들에게 전송한뒤 해당 메세지를 DB에 저장함
     public void sendMessage(String publishMessage) {
         try {
-            // ChatMessage 객채로 맵핑
             ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
-            // 채팅방을 구독한 클라이언트에게 메시지 발송
             messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
             ChatMessage message = new ChatMessage();
             message.setType(chatMessage.getType());

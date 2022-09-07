@@ -51,7 +51,7 @@ public class UserService {
         }
 
         //닉네임 중복 체크
-        Optional<String> founds = userRepository.findByNickname(nickname);
+        Optional<Member> founds = userRepository.findByNickname(nickname);
         if (founds.isPresent()) {
             throw new CustomException(ErrorCode.NICKNAME_DUPLICATION_CODE);
         }
@@ -102,4 +102,10 @@ public class UserService {
                 .sign(Algorithm.HMAC512("6dltmfrl"));
         return jwtToken;
     }
+
+    // 유저의 닉네임으로 유저 조회
+    public Member getMember(String nickname) {
+        return userRepository.findByNickname(nickname).orElseThrow(() -> new IllegalArgumentException("회원이 아닙니다."));
+    }
+
 }

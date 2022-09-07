@@ -50,5 +50,4 @@ public class ChatRoom implements Serializable {
     public ChatRoom(String uuid) {
         this.roomId = uuid;
     }
-
 }

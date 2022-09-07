@@ -6,13 +6,11 @@ import com.example.modiraa.model.ChatMessage;
 import com.example.modiraa.service.ChatMessageService;
 import com.example.modiraa.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class ChatController {

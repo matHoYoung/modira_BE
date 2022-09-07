@@ -76,4 +76,8 @@ public class Post {
     @JoinColumn(name="chatroom_id")
     private ChatRoom chatRoom;
 
+    public void updateRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
+    }
+
 }

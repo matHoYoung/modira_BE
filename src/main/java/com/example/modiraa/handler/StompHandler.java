@@ -16,6 +16,7 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -57,17 +58,19 @@ public class StompHandler implements ChannelInterceptor {
 
             Long memberId = member.getId();
 
-            chatRoomService.setUserEnterInfo(memberId, roomId);
+            if (!Objects.equals(chatRoomService.getUserEnterRoom(memberId), roomId)) {
+                chatRoomService.setUserEnterInfo(memberId, roomId);
 
-            // 채팅방의 인원수를 +1한다.
-            chatRoomService.plusUserCount(roomId);
+                // 채팅방의 인원수를 +1한다.
+                chatRoomService.plusUserCount(roomId);
 
-            // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
-            chatMessageService.sendChatMessage(ChatMessage.builder()
-                    .type(ChatMessage.MessageType.ENTER)
-                    .roomId(roomId)
-                    .sender(member.getNickname())
-                    .build());
+                // 클라이언트 입장 메시지를 채팅방에 발송한다.(redis publish)
+                chatMessageService.sendChatMessage(ChatMessage.builder()
+                        .type(ChatMessage.MessageType.ENTER)
+                        .roomId(roomId)
+                        .sender(member)
+                        .build());
+            }
 
             log.info("SUBSCRIBED {}, {}", member.getNickname(), roomId);
 
@@ -82,7 +85,7 @@ public class StompHandler implements ChannelInterceptor {
 
             // 클라이언트 퇴장 메시지를 채팅방에 발송한다.(redis publish)
             String name = Optional.ofNullable((Principal) message.getHeaders().get("simpUser")).map(Principal::getName).orElse("UnknownUser");
-            chatMessageService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.QUIT).roomId(roomId).sender(name).build());
+            //chatMessageService.sendChatMessage(ChatMessage.builder().type(ChatMessage.MessageType.QUIT).roomId(roomId).sender(name).build());
 
             // 퇴장한 클라이언트의 roomId 맵핑 정보를 삭제한다.
             chatRoomService.removeUserEnterInfo(sessionId);

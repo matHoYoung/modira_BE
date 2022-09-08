@@ -28,4 +28,5 @@ public class PostDetailResponseDto {
     private String writerAge;
     private Long writerScore;
     private String roomId;
+    private int currentPeople;
 }

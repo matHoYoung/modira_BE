@@ -35,12 +35,4 @@ public class MemberRoomController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(memberRoomService.ReadMember(roomId));
     }
-
-//    // 참여한 유저 인원 수
-//    @GetMapping("/api/joinRoom/numberOfPeople/{roomId}")
-//    public ResponseEntity<?> numberOfPeople(@PathVariable String roomId) {
-//
-//        return memberRoomService.numberOfPeople(roomId);
-//    }
-
 }

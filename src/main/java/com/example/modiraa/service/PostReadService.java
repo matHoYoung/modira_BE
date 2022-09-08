@@ -141,6 +141,7 @@ public class PostReadService {
                 .writerAge(post.getMember().getAge())
                 .writerScore(score)
                 .roomId(post.getChatRoom().getRoomId())
+                .currentPeople(post.getChatRoom().getCurrentPeople())
                 .build();
     }
 

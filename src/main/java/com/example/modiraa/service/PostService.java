@@ -55,7 +55,7 @@ public class PostService {
 
         postRepository.save(post);
 
-        ChatRoom chatRoom = new ChatRoom(userDetails.getMember(),post);
+        ChatRoom chatRoom = new ChatRoom(userDetails.getMember(),post,post.getNumberofpeople());
         chatRoomRepository.save(chatRoom);
 
         post.updateRoom(chatRoom);

@@ -1,20 +1,16 @@
 package com.example.modiraa.service;
 
-import com.example.modiraa.dto.PostRequestDto;
 import com.example.modiraa.auth.UserDetailsImpl;
+import com.example.modiraa.dto.PostRequestDto;
 import com.example.modiraa.exception.CustomException;
 import com.example.modiraa.exception.ErrorCode;
 import com.example.modiraa.model.*;
 import com.example.modiraa.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 
 @Slf4j

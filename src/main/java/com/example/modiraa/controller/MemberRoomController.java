@@ -25,7 +25,6 @@ public class MemberRoomController {
     @PostMapping("/api/enter/{roomId}")
     public ResponseEntity<?> enterRoom(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String roomId) {
         return memberRoomService.enterRoom(userDetails, roomId);
-
     }
 
     // 참여한 유저 정보 리스트

@@ -1,9 +1,7 @@
 package com.example.modiraa.service;
 
 import com.example.modiraa.dto.ChatMessageResponseDto;
-import com.example.modiraa.dto.PostsResponseDto;
 import com.example.modiraa.model.ChatMessage;
-import com.example.modiraa.model.Post;
 import com.example.modiraa.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -10,7 +10,8 @@ public enum ErrorCode {
     NICKNAME_DUPLICATION_CODE(400, "C001", "중복된 닉네임이 있습니다"),
     ID_DUPLICATION_CODE(400, "C002", "중복된 유저 입니다."),
     LENGTH_CHECK_CODE(400, "C003", "아이디를 2-8자로 입력해 주세요"),
-    IMAGE_CHECK_CODE(400, "C004", "이미지를 확인해 주세요");
+    IMAGE_CHECK_CODE(400, "C004", "이미지를 확인해 주세요"),
+    POST_CHECK_CODE(400, "C005", "게시글은 하나만 작성 할 수 있습니다.");
 
     private final int status;
     private final String code;

@@ -75,5 +75,4 @@ public class Post {
     @OneToOne
     @JoinColumn(name="chatroom_id")
     private ChatRoom chatRoom;
-
 }

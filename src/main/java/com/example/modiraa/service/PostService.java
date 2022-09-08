@@ -2,6 +2,8 @@ package com.example.modiraa.service;
 
 import com.example.modiraa.dto.PostRequestDto;
 import com.example.modiraa.auth.UserDetailsImpl;
+import com.example.modiraa.exception.CustomException;
+import com.example.modiraa.exception.ErrorCode;
 import com.example.modiraa.model.ChatRoom;
 import com.example.modiraa.model.Member;
 import com.example.modiraa.repository.UserRepository;
@@ -31,25 +33,32 @@ public class PostService {
 
         PostImage postImage = postImageRepository.findByMenu(postRequestDto.getMenu());
 
-        Post post = Post.builder()
-                .category(postRequestDto.getCategory())
-                .title(postRequestDto.getTitle())
-                .contents(postRequestDto.getContents())
-                .address(postRequestDto.getAddress())
-                .latitude(postRequestDto.getLatitude())
-                .longitude(postRequestDto.getLongitude())
-                .date(postRequestDto.getDate())
-                .time(postRequestDto.getTime())
-                .numberofpeople(postRequestDto.getNumberOfPeople())
-                .menu(postRequestDto.getMenu())
-                .gender(postRequestDto.getGender())
-                .age(postRequestDto.getAge())
-                .member(member)
-                .postImage(postImage)
-                .chatRoom(chatRoom)
-                .build();
+        if (member.getPostState() == null){
+            Post post = Post.builder()
+                    .category(postRequestDto.getCategory())
+                    .title(postRequestDto.getTitle())
+                    .contents(postRequestDto.getContents())
+                    .address(postRequestDto.getAddress())
+                    .latitude(postRequestDto.getLatitude())
+                    .longitude(postRequestDto.getLongitude())
+                    .date(postRequestDto.getDate())
+                    .time(postRequestDto.getTime())
+                    .numberofpeople(postRequestDto.getNumberOfPeople())
+                    .menu(postRequestDto.getMenu())
+                    .gender(postRequestDto.getGender())
+                    .age(postRequestDto.getAge())
+                    .member(member)
+                    .postImage(postImage)
+                    .chatRoom(chatRoom)
+                    .build();
 
-        postRepository.save(post);
+            member.setPostState(postRequestDto.getTitle());
+            userRepository.save(member);
+            postRepository.save(post);
+
+        } else {
+            throw new CustomException(ErrorCode.POST_CHECK_CODE);
+        }
     }
 
     // 모임 삭제
@@ -65,5 +74,4 @@ public class PostService {
             throw new IllegalArgumentException("모임을 삭제할 권한이 없습니다");
         }
     }
-
 }

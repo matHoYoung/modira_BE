@@ -3,16 +3,15 @@ package com.example.modiraa.controller;
 import com.example.modiraa.config.jwt.JwtAuthorizationFilter;
 import com.example.modiraa.dto.ChatMessageRequestDto;
 import com.example.modiraa.model.ChatMessage;
+import com.example.modiraa.model.Member;
 import com.example.modiraa.service.ChatMessageService;
 import com.example.modiraa.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class ChatController {
@@ -24,14 +23,9 @@ public class ChatController {
     // websocket "/pub/chat/message"로 들어오는 메시징을 처리한다.
     @MessageMapping("/chat/message")
     public void message(@RequestBody ChatMessageRequestDto messageRequestDto, @Header("Authorization") String token) {
-        String nickname = jwtAuthorizationFilter.getUserNameFromJwt(token);
-
+        Member member = jwtAuthorizationFilter.getMemberFromJwt(token);
         ChatMessage chatMessage = new ChatMessage(messageRequestDto, userService);
-
-        // 로그인 회원 정보로 대화명 설정
-        chatMessage.setSender(nickname);
-
-        // Websocket에 발행된 메시지를 redis로 발행(publish)
+        chatMessage.setSender(member);
         chatMessageService.sendChatMessage(chatMessage);
     }
 }

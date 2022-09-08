@@ -1,6 +1,9 @@
 package com.example.modiraa.service;
 
+import com.example.modiraa.dto.ChatMessageResponseDto;
+import com.example.modiraa.dto.PostsResponseDto;
 import com.example.modiraa.model.ChatMessage;
+import com.example.modiraa.model.Post;
 import com.example.modiraa.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,20 +41,36 @@ public class ChatMessageService {
         chatMessage.setUserCount(chatRoomService.getUserCount(chatMessage.getRoomId()));
 
         if (ChatMessage.MessageType.ENTER.equals(chatMessage.getType())) {
-            chatMessage.setMessage(chatMessage.getSender() + "님이 방에 입장했습니다.");
+            chatMessage.setMessage(chatMessage.getSender().getNickname() + "님이 방에 입장했습니다.");
         } else if (ChatMessage.MessageType.QUIT.equals(chatMessage.getType())) {
-            chatMessage.setMessage(chatMessage.getSender() + "님이 방에서 나갔습니다.");
+            chatMessage.setMessage(chatMessage.getSender().getNickname() + "님이 방에서 나갔습니다.");
         }
-        log.info("sender, sendMessage: {}, {}", chatMessage.getSender(), chatMessage.getMessage());
+        log.info("sender, sendMessage: {}, {}", chatMessage.getSender().getNickname(), chatMessage.getMessage());
         redisTemplate.convertAndSend(channelTopic.getTopic(), chatMessage);
     }
 
     // 채팅방의 마지막 150개 메세지를 페이징하여 리턴함
-    public Page<ChatMessage> getChatMessageByRoomId(String roomId, Pageable pageable) {
+    public Page<ChatMessageResponseDto> getChatMessageByRoomId(String roomId, Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         Sort sort = Sort.by(Sort.Direction.DESC, "id" );
         pageable = PageRequest.of(page, 150, sort );
-        return chatMessageRepository.findByRoomIdOrderByIdDesc(roomId, pageable);
+        Page<ChatMessage> chatMessages = chatMessageRepository.findByRoomIdOrderByIdDesc(roomId, pageable);
+
+        return chatResponseDto(chatMessages);
+    }
+
+    private Page<ChatMessageResponseDto> chatResponseDto(Page<ChatMessage> postSlice) {
+        return postSlice.map(p ->
+                ChatMessageResponseDto.builder()
+                        .type(p.getType())
+                        .roomId(p.getRoomId())
+                        .senderId(p.getSender().getId())
+                        .sender(p.getSender().getNickname())
+                        .profileImage(p.getSender().getProfileImage())
+                        .message(p.getMessage())
+                        .userCount(p.getUserCount())
+                        .build()
+        );
     }
 
 }

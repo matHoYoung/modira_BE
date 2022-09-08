@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberRoomRepository extends JpaRepository<MemberRoom, Long> {
 
@@ -27,4 +28,5 @@ public interface MemberRoomRepository extends JpaRepository<MemberRoom, Long> {
     " where c = :chatRoom")
     List<JoinUserListResponseDto> RoomUserList(@Param("chatRoom")ChatRoom chatRoom);
 
+    Optional<MemberRoom> findByChatRoomAndMember(Optional<ChatRoom> chatroom, Member member);
 }

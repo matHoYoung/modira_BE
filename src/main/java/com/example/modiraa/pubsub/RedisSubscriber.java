@@ -1,5 +1,6 @@
 package com.example.modiraa.pubsub;
 
+import com.example.modiraa.dto.ChatMessageResponseDto;
 import com.example.modiraa.model.ChatMessage;
 import com.example.modiraa.repository.ChatMessageRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
+
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -22,7 +25,18 @@ public class RedisSubscriber {
     public void sendMessage(String publishMessage) {
         try {
             ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
-            messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
+
+            messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(),
+                    ChatMessageResponseDto.builder()
+                            .type(chatMessage.getType())
+                            .roomId(chatMessage.getRoomId())
+                            .senderId(chatMessage.getSender().getId())
+                            .sender(chatMessage.getSender().getNickname())
+                            .profileImage(chatMessage.getSender().getProfileImage())
+                            .message(chatMessage.getMessage())
+                            .userCount(chatMessage.getUserCount())
+                            .build());
+
             ChatMessage message = new ChatMessage();
             message.setType(chatMessage.getType());
             message.setRoomId(chatMessage.getRoomId());
@@ -30,6 +44,7 @@ public class RedisSubscriber {
             message.setMessage(chatMessage.getMessage());
             message.setUserCount(chatMessage.getUserCount());
             chatMessageRepository.save(message);
+
         } catch (Exception e) {
             log.error("Exception {}", e);
         }

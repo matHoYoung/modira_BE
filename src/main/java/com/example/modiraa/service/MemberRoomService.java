@@ -4,16 +4,19 @@ import com.example.modiraa.auth.UserDetailsImpl;
 import com.example.modiraa.dto.JoinUserListResponseDto;
 import com.example.modiraa.exception.CustomException;
 import com.example.modiraa.exception.ErrorCode;
-import com.example.modiraa.model.*;
+import com.example.modiraa.model.ChatRoom;
+import com.example.modiraa.model.Member;
+import com.example.modiraa.model.MemberRoom;
+import com.example.modiraa.model.Post;
 import com.example.modiraa.repository.ChatRoomRepository;
 import com.example.modiraa.repository.MemberRoomRepository;
+import com.example.modiraa.repository.PostRepository;
 import com.example.modiraa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +29,7 @@ public class MemberRoomService {
     private final MemberRoomRepository memberRoomRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     //채팅참여하기
     public ResponseEntity<?> enterRoom(UserDetailsImpl userDetails, String roomId) {
@@ -46,6 +50,10 @@ public class MemberRoomService {
             throw new CustomException(ErrorCode.JOIN_CHECK_CODE);
         }
 
+        //참가자 state 값 변화.
+        Post postRoom = postRepository.findByChatRoomId(chatroom.get().getId());
+        member.setPostState(postRoom.getTitle());
+        userRepository.save(member);
 
         return new ResponseEntity<>("모임에 참여하셨습니다.", HttpStatus.valueOf(200));
     }

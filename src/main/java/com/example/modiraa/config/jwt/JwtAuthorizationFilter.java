@@ -95,6 +95,23 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         throw new IllegalArgumentException("회원이 아닙니다.");
     }
 
+    public Member getMemberFromJwt(String token) {
+
+        String username =
+                JWT.require(Algorithm.HMAC512("6dltmfrl")).build().verify(token).getClaim("username").asString();
+
+        if(username != null) {
+            Member memberEntity = userRepository.findByUsername(username).orElseThrow(
+                    () -> new IllegalArgumentException("username이 없습니다.")
+            );
+            UserDetailsImpl userDetails = new UserDetailsImpl(memberEntity);
+
+            return userDetails.getMember();
+        }
+
+        throw new IllegalArgumentException("회원이 아닙니다.");
+    }
+
     public boolean validateToken(String jwt) {
         return this.getClaims(jwt) != null;
     }

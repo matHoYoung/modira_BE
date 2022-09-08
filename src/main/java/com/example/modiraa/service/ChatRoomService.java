@@ -53,6 +53,10 @@ public class ChatRoomService {
         hashOpsEnterInfo.put(ENTER_INFO, Long.toString(memberId), roomId);
     }
 
+    public String getUserEnterRoom(Long memberId) {
+        return hashOpsEnterInfo.get(ENTER_INFO, Long.toString(memberId));
+    }
+
     // memberId로 입장해 있는 채팅방 ID 조회
     public String getUserEnterRoomId(String memberId) {
         return hashOpsEnterInfo.get(ENTER_INFO, memberId);

@@ -1,16 +1,19 @@
 package com.example.modiraa.dto;
 
 import com.example.modiraa.model.ChatMessage;
-import com.example.modiraa.model.Member;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@Setter
+@Builder
 @AllArgsConstructor
-public class ChatMessageRequestDto {
+@NoArgsConstructor
+public class ChatMessageResponseDto {
     private ChatMessage.MessageType type;
     private String roomId;
-    private Member sender;
+    private Long senderId;
+    private String sender;
+    private String profileImage;
     private String message;
     private long userCount;
 }

@@ -13,8 +13,8 @@ public class PostsResponseDto {
     private Long postId;
     private String category;
     private String title;
-    private String address;
     private String date;
+    private String time;
     private int numberOfPeople;
     private String menu;
     private String gender;

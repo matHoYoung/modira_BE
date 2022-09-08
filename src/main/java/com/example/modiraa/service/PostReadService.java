@@ -1,14 +1,13 @@
 package com.example.modiraa.service;
 
+import com.example.modiraa.dto.*;
+import com.example.modiraa.model.MemberRoom;
 import com.example.modiraa.repository.HatesRepository;
 import com.example.modiraa.repository.LikesRepository;
-import com.example.modiraa.dto.PostDetailResponseDto;
-import com.example.modiraa.dto.PostListDto;
-import com.example.modiraa.dto.PostsResponseDto;
-import com.example.modiraa.dto.myPostsResponseDto;
 import com.example.modiraa.auth.UserDetailsImpl;
 import com.example.modiraa.model.Member;
 import com.example.modiraa.model.Post;
+import com.example.modiraa.repository.MemberRoomRepository;
 import com.example.modiraa.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,8 @@ public class PostReadService {
     private final PostRepository postRepository;
     private final LikesRepository likesRepository;
     private final HatesRepository hatesRepository;
+
+    private final MemberRoomRepository memberRoomRepository;
 
     // 모임 검색
     public Page<PostsResponseDto> searchPosts(String keyword, String address, Pageable pageable, Long lastId) {
@@ -85,8 +86,8 @@ public class PostReadService {
         log.info("memberAddress: {}", memberAddress);
 
         Page<Post> postAll = postRepository.findAllByAddressContaining(memberAddress, pageable);
-        Page<Post> postGoldenBell = postRepository.findAllByAddressContainingAndCategory(memberAddress, "골든벨", pageable);
-        Page<Post> postDutchPay = postRepository.findAllByAddressContainingAndCategory(memberAddress,"N빵", pageable);
+        Page<Post> postGoldenBell = postRepository.findAllByAddressContainingAndCategory(memberAddress, "방장이 쏜다! 골든벨", pageable);
+        Page<Post> postDutchPay = postRepository.findAllByAddressContainingAndCategory(memberAddress,"다같이 내자! N빵", pageable);
 
         PostListDto postListDto = new PostListDto();
 
@@ -103,8 +104,8 @@ public class PostReadService {
                         .postId(p.getId())
                         .title(p.getTitle())
                         .category(p.getCategory())
-                        .address(p.getAddress())
-                        .date(p.getDate().split("/")[1] + "월 " + p.getDate().split("/")[2] + "일")
+                        .date(p.getDate())
+                        .time(p.getTime())
                         .numberOfPeople(p.getNumberofpeople())
                         .menu(p.getMenu())
                         .gender(p.getGender())
@@ -128,7 +129,7 @@ public class PostReadService {
                 .restaurantAddress(post.getAddress())
                 .latitude(post.getLatitude())
                 .longitude(post.getLongitude())
-                .date(post.getDate().split("/")[0] + " / " + post.getDate().split("/")[1] + " / "+ post.getDate().split("/")[2])
+                .date(post.getDate().split("/")[0] + " / " + post.getDate().split("/")[1] + " / " + post.getDate().split("/")[2])
                 .time(post.getTime())
                 .numberOfPeople(post.getNumberofpeople())
                 .menu(post.getMenu())
@@ -139,7 +140,7 @@ public class PostReadService {
                 .writerGender(post.getMember().getGender())
                 .writerAge(post.getMember().getAge())
                 .writerScore(score)
-                //.uuid(post.getChatRoom().getUuid())
+                .roomId(post.getChatRoom().getRoomId())
                 .build();
     }
 
@@ -151,11 +152,11 @@ public class PostReadService {
         return postRepository.MyPostRead(member, pageable);
     }
 
-//    //내가 참석한 모임 조회
-//    public List<PostsResponseDto> getMyJoinPost(UserDetailsImpl userDetails) {
-//        Member member = userDetails.getMember();
-//        Pageable pageable = PageRequest.ofSize(1);
-//        return postRepository.MyJoinRead(member, pageable);
-//    }
+    //내가 참석한 모임 조회
+    public List<EnterPostsResponseDto> getMyJoinPost(UserDetailsImpl userDetails) {
+        Member member = userDetails.getMember();
+        Pageable pageable = PageRequest.ofSize(1);
+        return memberRoomRepository.MyJoinRead(member, pageable);
+    }
 }
 

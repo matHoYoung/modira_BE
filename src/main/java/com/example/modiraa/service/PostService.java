@@ -2,63 +2,67 @@ package com.example.modiraa.service;
 
 import com.example.modiraa.dto.PostRequestDto;
 import com.example.modiraa.auth.UserDetailsImpl;
-import com.example.modiraa.exception.CustomException;
-import com.example.modiraa.exception.ErrorCode;
-import com.example.modiraa.model.ChatRoom;
-import com.example.modiraa.model.Member;
-import com.example.modiraa.repository.UserRepository;
-import com.example.modiraa.model.Post;
-import com.example.modiraa.model.PostImage;
-import com.example.modiraa.repository.PostImageRepository;
-import com.example.modiraa.repository.PostRepository;
+import com.example.modiraa.model.*;
+import com.example.modiraa.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class PostService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
+    private final ChatRoomRepository chatRoomRepository;
+
+    private final MemberRoomRepository memberRoomRepository;
 
     // 모임 생성
-    public void createPost(String username, PostRequestDto postRequestDto, ChatRoom chatRoom) {
+    public void createPost(String username, PostRequestDto postRequestDto, UserDetailsImpl userDetails) {
         Member member = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("다시 로그인해 주세요."));
 
         PostImage postImage = postImageRepository.findByMenu(postRequestDto.getMenu());
 
-        if (member.getPostState() == null){
-            Post post = Post.builder()
-                    .category(postRequestDto.getCategory())
-                    .title(postRequestDto.getTitle())
-                    .contents(postRequestDto.getContents())
-                    .address(postRequestDto.getAddress())
-                    .latitude(postRequestDto.getLatitude())
-                    .longitude(postRequestDto.getLongitude())
-                    .date(postRequestDto.getDate())
-                    .time(postRequestDto.getTime())
-                    .numberofpeople(postRequestDto.getNumberOfPeople())
-                    .menu(postRequestDto.getMenu())
-                    .gender(postRequestDto.getGender())
-                    .age(postRequestDto.getAge())
-                    .member(member)
-                    .postImage(postImage)
-                    .chatRoom(chatRoom)
-                    .build();
 
-            member.setPostState(postRequestDto.getTitle());
-            userRepository.save(member);
-            postRepository.save(post);
+        Post post = Post.builder()
+                .category(postRequestDto.getCategory())
+                .title(postRequestDto.getTitle())
+                .contents(postRequestDto.getContents())
+                .address(postRequestDto.getAddress())
+                .latitude(postRequestDto.getLatitude())
+                .longitude(postRequestDto.getLongitude())
+                .date(postRequestDto.getDate())
+                .time(postRequestDto.getTime())
+                .numberofpeople(postRequestDto.getNumberOfPeople())
+                .menu(postRequestDto.getMenu())
+                .gender(postRequestDto.getGender())
+                .age(postRequestDto.getAge())
+                .member(member)
+                .postImage(postImage)
+                .build();
 
-        } else {
-            throw new CustomException(ErrorCode.POST_CHECK_CODE);
-        }
+        postRepository.save(post);
+
+        ChatRoom chatRoom = new ChatRoom(userDetails.getMember(),post);
+        chatRoomRepository.save(chatRoom);
+
+        post.updateRoom(chatRoom);
+
+        MemberRoom memberRoom = new MemberRoom(userDetails.getMember(), chatRoom);
+        memberRoomRepository.save(memberRoom);
+
     }
 
     // 모임 삭제
@@ -74,4 +78,5 @@ public class PostService {
             throw new IllegalArgumentException("모임을 삭제할 권한이 없습니다");
         }
     }
+
 }

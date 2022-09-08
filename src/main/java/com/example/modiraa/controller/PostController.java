@@ -23,8 +23,7 @@ public class PostController {
     public ResponseEntity<String> createPost(@RequestBody PostRequestDto postRequestDto,
                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
-        ChatRoom chatRoom = chatRoomService.createChatRoom();
-        postService.createPost(username, postRequestDto, chatRoom);
+        postService.createPost(username, postRequestDto, userDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body("모임 생성 완료");
     }
 

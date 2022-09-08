@@ -29,13 +29,22 @@ public class ChatRoom implements Serializable {
     @Column
     private long userCount; //채팅방 인원 수
 
+
+//    @Column(nullable = false)
+//    private int numberOfPeople;
+
     @OneToOne(mappedBy = "chatRoom")
     private Post post;
 
-    public static ChatRoom create() {
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.roomId = UUID.randomUUID().toString();
-        return chatRoom;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OWNERMEMBER_ID")
+    private Member ownerMember;
+
+    public ChatRoom(Member ownerMember, Post post) {
+        this.ownerMember = ownerMember;
+        this.post = post;
+        this.roomId = UUID.randomUUID().toString();
+
     }
 
     public ChatRoom(String uuid) {

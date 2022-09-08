@@ -1,5 +1,7 @@
 package com.example.modiraa.model;
 
+import com.example.modiraa.dto.ChatMessageRequestDto;
+import com.example.modiraa.service.UserService;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,8 +29,9 @@ public class ChatMessage {
     @Column
     private String roomId; // 방번호
 
-    @Column
-    private String sender; // 메시지 보낸사람
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member sender; // 메시지 보낸사람
 
     @Column(length = 100000)
     private String message; // 메시지
@@ -37,11 +40,20 @@ public class ChatMessage {
     private long userCount; // 채팅방 인원수, 채팅방 내에서 메시지가 전달될때 인원수 갱신시 사용
 
     @Builder
-    public ChatMessage(MessageType type, String roomId, String sender, String message, long userCount) {
+    public ChatMessage(MessageType type, String roomId, Member sender, String message, long userCount) {
         this.type = type;
         this.roomId = roomId;
         this.sender = sender;
         this.message = message;
         this.userCount = userCount;
+    }
+
+    @Builder
+    public ChatMessage(ChatMessageRequestDto chatMessageRequestDto, UserService userService) {
+        this.type = chatMessageRequestDto.getType();
+        this.roomId = chatMessageRequestDto.getRoomId();
+        this.sender =  chatMessageRequestDto.getSender();
+        this.message = chatMessageRequestDto.getMessage();
+        this.userCount = chatMessageRequestDto.getUserCount();
     }
 }

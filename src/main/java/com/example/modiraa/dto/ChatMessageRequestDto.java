@@ -1,6 +1,7 @@
 package com.example.modiraa.dto;
 
 import com.example.modiraa.model.ChatMessage;
+import com.example.modiraa.model.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,7 +10,7 @@ import lombok.Getter;
 public class ChatMessageRequestDto {
     private ChatMessage.MessageType type;
     private String roomId;
-    private String sender;
+    private Member sender;
     private String message;
     private long userCount;
 }

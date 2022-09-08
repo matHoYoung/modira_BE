@@ -1,5 +1,7 @@
 package com.example.modiraa.repository;
 
+import com.example.modiraa.dto.EnterPostsResponseDto;
+import com.example.modiraa.dto.PostsResponseDto;
 import com.example.modiraa.dto.myPostsResponseDto;
 import com.example.modiraa.model.Member;
 import com.example.modiraa.model.Post;
@@ -37,12 +39,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "order by p.id desc")
     List<myPostsResponseDto> MyPostRead(@Param("member")Member member, Pageable pageable);
 
-//    //내가 참석한 모임 조회
-//    @Query("SELECT new com.example.modiraa.dto.PostsResponseDto(p.id, p.category, p.title, p.address, p.date, p.numberofpeople, p.menu, p.gender, p.postImage.imageurl)" +
-//            "from Post p  " +
-//            "where p .member =:member " +
-//            "order by p.id desc")
-//    List<PostsResponseDto> MyJoinRead(@Param("member")Member member, Pageable pageable);
+
 
 
 }

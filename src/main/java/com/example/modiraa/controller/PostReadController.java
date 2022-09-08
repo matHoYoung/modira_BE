@@ -1,10 +1,8 @@
 package com.example.modiraa.controller;
 
+import com.example.modiraa.dto.*;
+import com.example.modiraa.model.MemberRoom;
 import com.example.modiraa.service.PostReadService;
-import com.example.modiraa.dto.PostDetailResponseDto;
-import com.example.modiraa.dto.PostListDto;
-import com.example.modiraa.dto.PostsResponseDto;
-import com.example.modiraa.dto.myPostsResponseDto;
 import com.example.modiraa.auth.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -73,12 +71,12 @@ public class PostReadController {
         return ResponseEntity.status(HttpStatus.OK).body(postReadService.getMyReadPost(userDetails));
     }
 
-//    // 내가 참석한 모임 조회
-//    @GetMapping("/api/myrooms")
-//    public ResponseEntity<List<PostsResponseDto>> getMyJoinPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(postReadService.getMyJoinPost(userDetails));
-//    }
+    // 내가 참석한 모임 조회
+    @GetMapping("/api/myjoin")
+    public ResponseEntity<List<EnterPostsResponseDto>> getMyJoinPost(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+
+        return ResponseEntity.status(HttpStatus.OK).body(postReadService.getMyJoinPost(userDetails));
+    }
 
 
 }

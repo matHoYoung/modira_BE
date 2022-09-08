@@ -5,9 +5,13 @@ import com.example.modiraa.dto.JoinUserListResponseDto;
 import com.example.modiraa.model.ChatRoom;
 import com.example.modiraa.model.Member;
 import com.example.modiraa.model.MemberRoom;
+import com.example.modiraa.model.Post;
 import com.example.modiraa.repository.ChatRoomRepository;
 import com.example.modiraa.repository.MemberRoomRepository;
+import com.example.modiraa.repository.PostRepository;
+import com.example.modiraa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,8 @@ public class MemberRoomService {
 
     private final MemberRoomRepository memberRoomRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     //채팅참여하기
     public ResponseEntity<?> enterRoom(UserDetailsImpl userDetails, String roomId) {
@@ -36,6 +42,11 @@ public class MemberRoomService {
         MemberRoom memberRoom = new MemberRoom(member,chatroom.get());
 
         memberRoomRepository.save(memberRoom);
+
+        //참가자 state 값 변화.
+        Post postRoom = postRepository.findByChatRoomId(chatroom.get().getId());
+        member.setPostState(postRoom.getTitle());
+        userRepository.save(member);
 
         return new ResponseEntity<>("모임에 참여하셨습니다.", HttpStatus.valueOf(200));
     }

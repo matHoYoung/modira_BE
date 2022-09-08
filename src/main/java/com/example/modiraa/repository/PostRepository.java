@@ -1,7 +1,5 @@
 package com.example.modiraa.repository;
 
-import com.example.modiraa.dto.EnterPostsResponseDto;
-import com.example.modiraa.dto.PostsResponseDto;
 import com.example.modiraa.dto.myPostsResponseDto;
 import com.example.modiraa.model.Member;
 import com.example.modiraa.model.Post;
@@ -21,6 +19,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findAllByAddressContaining(String address, Pageable pageable);
     Page<Post> findAllByAddressContainingAndCategory(String address, String category, Pageable pageable);
+
+    Post findByChatRoomId(Long chatRoomId);
 
 
     @Query(value = "SELECT * FROM Post WHERE id < :lastId AND address LIKE :address% AND (menu LIKE %:keyword% OR title LIKE %:keyword% OR contents LIKE %:keyword% )",

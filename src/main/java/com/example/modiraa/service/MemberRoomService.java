@@ -51,6 +51,24 @@ public class MemberRoomService {
         return new ResponseEntity<>("모임에 참여하셨습니다.", HttpStatus.valueOf(200));
     }
 
+    //모임 완료하기
+    public ResponseEntity<?> leaveRoom(UserDetailsImpl userDetails, String roomId) {
+        Member member = userDetails.getMember();
+        Optional<ChatRoom> chatroom = chatRoomRepository.findByRoomId(roomId);
+        if (chatroom.isEmpty()){
+            throw new IllegalArgumentException("존재하지 않는 모임 입니다.");
+        }
+        MemberRoom memberRoom = new MemberRoom(member,null);
+
+        memberRoomRepository.save(memberRoom);
+
+        //참가자 state 값 변화.
+        member.setPostState(null);
+        userRepository.save(member);
+
+        return new ResponseEntity<>("모임을 완료하였습니다.", HttpStatus.valueOf(200));
+    }
+
     // 참여한 유저 정보 리스트
     public List<JoinUserListResponseDto> ReadMember(String roomId) {
         Optional<ChatRoom> chatroom = chatRoomRepository.findByRoomId(roomId);

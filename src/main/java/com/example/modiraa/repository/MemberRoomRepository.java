@@ -29,4 +29,6 @@ public interface MemberRoomRepository extends JpaRepository<MemberRoom, Long> {
     List<JoinUserListResponseDto> RoomUserList(@Param("chatRoom")ChatRoom chatRoom);
 
     Optional<MemberRoom> findByChatRoomAndMember(Optional<ChatRoom> chatroom, Member member);
+
+    Optional<MemberRoom> findByMember(Member member);
 }

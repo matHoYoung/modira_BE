@@ -41,7 +41,8 @@ public class MyPageService {
 
 
     }
-//마이프로필 조회
+
+    //마이프로필 조회
     public MyUserProfileResponseDto getMyProfileRead(UserDetailsImpl userDetails) {
 
         Member member = userDetails.getMember();
@@ -49,7 +50,7 @@ public class MyPageService {
 
         String roomId = null;
 
-        Optional<MemberRoom> memberRoom = memberRoomRepository.findByMember(member);
+        Optional<MemberRoom> memberRoom = memberRoomRepository.findTopByMemberOrderByIdDesc(member);
         if(memberRoom.isPresent()) {
              roomId = memberRoom.get().getChatRoom().getRoomId();
         }

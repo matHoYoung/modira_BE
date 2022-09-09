@@ -11,7 +11,11 @@ public enum ErrorCode {
     ID_DUPLICATION_CODE(400, "C002", "중복된 유저 입니다."),
     LENGTH_CHECK_CODE(400, "C003", "아이디를 2-8자로 입력해 주세요"),
     IMAGE_CHECK_CODE(400, "C004", "이미지를 확인해 주세요"),
-    POST_CHECK_CODE(400, "C005", "게시글은 하나만 작성 할 수 있습니다.");
+    POST_CHECK_CODE(400, "C005", "게시글은 하나만 작성 할 수 있습니다."),
+    JOIN_CHECK_CODE(400, "C006", "중복된 참여는 불가능 합니다."),
+    JOIN_PULL_CHECK_CODE(400, "C007", "모임 인원이 마감 되었습니다."),
+    JOIN_ROOM_CHECK_CODE(400, "C008", "존재하는 모임이 없습니다.");
+
 
     private final int status;
     private final String code;

@@ -1,6 +1,7 @@
 package com.example.modiraa.controller;
 
 import com.example.modiraa.auth.UserDetailsImpl;
+import com.example.modiraa.dto.MyUserProfileResponseDto;
 import com.example.modiraa.dto.UserProfileResponseDto;
 import com.example.modiraa.service.MyPageService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class MyPageController {
 
     // 마이프로필 조회
     @GetMapping("/api/user/info")
-    public ResponseEntity<UserProfileResponseDto> getMyProfileRead(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+    public ResponseEntity<MyUserProfileResponseDto> getMyProfileRead(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(myPageService.getMyProfileRead(userDetails));

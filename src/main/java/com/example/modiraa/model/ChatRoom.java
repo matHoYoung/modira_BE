@@ -27,11 +27,13 @@ public class ChatRoom implements Serializable {
     private String roomId;
 
     @Column
-    private long userCount; //채팅방 인원 수
+    private long userCount;
 
+    @Column(nullable = false)
+    private int currentPeople;
 
-//    @Column(nullable = false)
-//    private int numberOfPeople;
+    @Column(nullable = false)
+    private int maxPeople;
 
     @OneToOne(mappedBy = "chatRoom")
     private Post post;
@@ -40,14 +42,21 @@ public class ChatRoom implements Serializable {
     @JoinColumn(name = "OWNERMEMBER_ID")
     private Member ownerMember;
 
-    public ChatRoom(Member ownerMember, Post post) {
+    public ChatRoom(Member ownerMember, Post post, int maxPeople) {
         this.ownerMember = ownerMember;
         this.post = post;
         this.roomId = UUID.randomUUID().toString();
+        this.currentPeople = 1;
+        this.maxPeople = maxPeople;
 
+    }
+
+    public void updateCurrentPeople() {
+        this.currentPeople = this.currentPeople + 1;
     }
 
     public ChatRoom(String uuid) {
         this.roomId = uuid;
     }
+
 }

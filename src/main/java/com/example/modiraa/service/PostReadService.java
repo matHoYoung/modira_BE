@@ -107,6 +107,7 @@ public class PostReadService {
                         .date(p.getDate())
                         .time(p.getTime())
                         .numberOfPeople(p.getNumberofpeople())
+                        .numberOfParticipant(p.getChatRoom().getCurrentPeople())
                         .menu(p.getMenu())
                         .gender(p.getGender())
                         .age(p.getAge())

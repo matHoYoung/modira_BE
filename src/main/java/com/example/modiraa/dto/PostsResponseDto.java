@@ -16,6 +16,7 @@ public class PostsResponseDto {
     private String date;
     private String time;
     private int numberOfPeople;
+    private int numberOfParticipant;
     private String menu;
     private String gender;
     private String age;

@@ -1,12 +1,11 @@
 package com.example.modiraa.service;
 
-import com.example.modiraa.dto.*;
-import com.example.modiraa.model.MemberRoom;
-import com.example.modiraa.repository.HatesRepository;
-import com.example.modiraa.repository.LikesRepository;
 import com.example.modiraa.auth.UserDetailsImpl;
+import com.example.modiraa.dto.*;
 import com.example.modiraa.model.Member;
 import com.example.modiraa.model.Post;
+import com.example.modiraa.repository.HatesRepository;
+import com.example.modiraa.repository.LikesRepository;
 import com.example.modiraa.repository.MemberRoomRepository;
 import com.example.modiraa.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -107,6 +106,7 @@ public class PostReadService {
                         .date(p.getDate())
                         .time(p.getTime())
                         .numberOfPeople(p.getNumberofpeople())
+                        .numberOfParticipant(p.getChatRoom().getCurrentPeople())
                         .menu(p.getMenu())
                         .gender(p.getGender())
                         .age(p.getAge())

@@ -1,9 +1,8 @@
 package com.example.modiraa.controller;
 
-import com.example.modiraa.dto.*;
-import com.example.modiraa.model.MemberRoom;
-import com.example.modiraa.service.PostReadService;
 import com.example.modiraa.auth.UserDetailsImpl;
+import com.example.modiraa.dto.*;
+import com.example.modiraa.service.PostReadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -77,6 +76,5 @@ public class PostReadController {
 
         return ResponseEntity.status(HttpStatus.OK).body(postReadService.getMyJoinPost(userDetails));
     }
-
 
 }

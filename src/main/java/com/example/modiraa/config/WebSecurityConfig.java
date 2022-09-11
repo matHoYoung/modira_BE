@@ -57,7 +57,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/kakao/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/chat/**").permitAll()
-                .antMatchers("**").permitAll()
                 .antMatchers("/").authenticated()
                 //.antMatchers(HttpMethod.GET,"/api/contents").permitAll()  //GET 요청 허용
                 //.antMatchers(HttpMethod.GET, "/api/reply/**").permitAll()
@@ -85,9 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.addExposedHeader("Authorization");
-        configuration.setAllowCredentials(true);  //
-        //  configuration.addAllowedOriginPattern("");
-        // configuration.addAllowedOrigin("프론트 주소"); // 배포 시
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

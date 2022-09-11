@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RequiredArgsConstructor
 @Controller
-public class ChatController {
+public class ChatMessageController {
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final ChatMessageService chatMessageService;

@@ -39,4 +39,4 @@ modiraa2\
 application.properties
 application.yml
 application-aws.yml
-application.yml
+JwtProperties.java

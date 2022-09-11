@@ -54,6 +54,9 @@ public class ChatRoom implements Serializable {
     public void updateCurrentPeople() {
         this.currentPeople = this.currentPeople + 1;
     }
+    public void minusCurrentPeople() {
+        this.currentPeople = this.currentPeople - 1;
+    }
 
     public ChatRoom(String uuid) {
         this.roomId = uuid;

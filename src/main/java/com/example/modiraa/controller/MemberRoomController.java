@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +22,12 @@ public class MemberRoomController {
     @PostMapping("/api/enter/{roomId}")
     public ResponseEntity<?> enterRoom(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String roomId) {
         return memberRoomService.enterRoom(userDetails, roomId);
+    }
+
+    // 방 나가기
+    @PostMapping("/api/leave/{roomId}")
+    public ResponseEntity<?> leaveRoom(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable String roomId) {
+        return memberRoomService.leaveRoom(userDetails, roomId);
     }
 
     // 참여한 유저 정보 리스트

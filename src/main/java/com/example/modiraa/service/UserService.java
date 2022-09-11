@@ -61,9 +61,6 @@ public class UserService {
         if (nickname.length() < 2 || nickname.length() > 8) {
             throw new CustomException(ErrorCode.LENGTH_CHECK_CODE);
         }
-//        else if (!Pattern.matches(pattern, nickname)) {
-//            return "알파벳 대소문자와 숫자로만 입력하세요";
-//        }
 
         // 패스워드 인코딩
         password = passwordEncoder.encode(password);

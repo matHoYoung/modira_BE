@@ -30,6 +30,6 @@ public interface MemberRoomRepository extends JpaRepository<MemberRoom, Long> {
 
     Optional<MemberRoom> findByChatRoomAndMember(Optional<ChatRoom> chatroom, Member member);
 
-    Optional<MemberRoom> findByMember(Member member);
+    Optional<MemberRoom> findTopByMemberOrderByIdDesc(Member member);
     Optional<MemberRoom> findByChatRoomId(Long chatroomID);
 }

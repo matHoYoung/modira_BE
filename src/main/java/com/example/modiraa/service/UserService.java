@@ -3,6 +3,7 @@ package com.example.modiraa.service;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.modiraa.auth.UserDetailsImpl;
+import com.example.modiraa.config.jwt.JwtProperties;
 import com.example.modiraa.dto.LoginIdCheckDto;
 import com.example.modiraa.dto.SocialSignupRequestDto;
 import com.example.modiraa.exception.CustomException;
@@ -94,9 +95,9 @@ public class UserService {
     public String JwtTokenCreate(String username){
         String jwtToken = JWT.create()
                 .withSubject("cos토큰")
-                .withExpiresAt(new Date(System.currentTimeMillis()+(60000*10*10*24)))
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
                 .withClaim("username", username)
-                .sign(Algorithm.HMAC512("6dltmfrl"));
+                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
         return jwtToken;
     }
 

@@ -62,7 +62,6 @@ public class MemberRoomService {
     public ResponseEntity<?> leaveRoom(UserDetailsImpl userDetails, String roomId) {
         Member member = userDetails.getMember();
         Optional<ChatRoom> chatroom = chatRoomRepository.findByRoomId(roomId);
-        System.out.println("여기-------------------"+chatroom.get().getId());
 
         MemberRoom memberRoom  = memberRoomRepository.findByChatRoomId(chatroom.get().getId()).orElseThrow(
                 () -> new CustomException(ErrorCode.JOIN_ROOM_CHECK_CODE)

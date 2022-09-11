@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.example.modiraa.auth.UserDetailsImpl;
 import com.example.modiraa.dto.LoginRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,9 +26,6 @@ public class FormLoginFilter extends UsernamePasswordAuthenticationFilter {
     public FormLoginFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
-
-    @Value("${secret.key}")
-    private String secretKey;
 
     // /login 요청을 하면 로그인 시도를 위해서 함수 실행
     @Override
@@ -72,11 +68,11 @@ public class FormLoginFilter extends UsernamePasswordAuthenticationFilter {
         //RSA방식은 아니고 Hash암호 방식
         String jwtToken = JWT.create()
                 .withSubject("cos토큰")
-                .withExpiresAt(new Date(System.currentTimeMillis()+(60000*10)))
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
                 .withClaim("username", userDetails.getMember().getUsername())
-                .sign(Algorithm.HMAC512("6dltmfrl"));
+                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
-        response.addHeader("Authorization", "Bearer "+jwtToken);
+        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
     }
 
     //로그인 실패시 예외 처리

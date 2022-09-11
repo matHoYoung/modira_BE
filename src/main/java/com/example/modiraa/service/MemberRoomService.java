@@ -63,7 +63,7 @@ public class MemberRoomService {
         Member member = userDetails.getMember();
         Optional<ChatRoom> chatroom = chatRoomRepository.findByRoomId(roomId);
 
-        MemberRoom memberRoom  = memberRoomRepository.findByChatRoomId(chatroom.get().getId()).orElseThrow(
+        MemberRoom memberRoom  = memberRoomRepository.findByChatRoomIdAndMember_Id(chatroom.get().getId(),member.getId()).orElseThrow(
                 () -> new CustomException(ErrorCode.JOIN_ROOM_CHECK_CODE)
         );
 

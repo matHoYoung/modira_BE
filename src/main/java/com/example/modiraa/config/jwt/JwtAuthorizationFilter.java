@@ -7,7 +7,6 @@ import com.example.modiraa.model.Member;
 import com.example.modiraa.repository.UserRepository;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,27 +34,24 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         this.userRepository = userRepository;
     }
 
-    @Value("${secret.key}")
-    private String secretKey;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         //헤더 확인
-        String header = request.getHeader("Authorization");
-        if(header == null || !header.startsWith("Bearer ")) {
+        String header = request.getHeader(JwtProperties.HEADER_STRING);
+        if(header == null || !header.startsWith(JwtProperties.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }
 
         //JWT 토큰을 검증을 해서 정상적인 사용자인지 확인
-        String jwtToken = request.getHeader("Authorization")
+        String jwtToken = request.getHeader(JwtProperties.HEADER_STRING)
                 .replace("Bearer ", "");
 
         System.out.println("header : "+header);
 
         String username =
-                JWT.require(Algorithm.HMAC512("6dltmfrl")).build().verify(jwtToken).getClaim("username").asString();
+                JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken).getClaim("username").asString();
 
         //서명이 정상적으로 됨.
         if(username != null) {
@@ -81,7 +77,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     public String getUserNameFromJwt(String token) {
 
         String username =
-                JWT.require(Algorithm.HMAC512("6dltmfrl")).build().verify(token).getClaim("username").asString();
+                JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token).getClaim("username").asString();
 
         if(username != null) {
             Member memberEntity = userRepository.findByUsername(username).orElseThrow(
@@ -98,7 +94,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     public Member getMemberFromJwt(String token) {
 
         String username =
-                JWT.require(Algorithm.HMAC512("6dltmfrl")).build().verify(token).getClaim("username").asString();
+                JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(token).getClaim("username").asString();
 
         if(username != null) {
             Member memberEntity = userRepository.findByUsername(username).orElseThrow(
@@ -118,7 +114,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private Jws<Claims> getClaims(String jwt) {
         try {
-            return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(jwt);
+            return Jwts.parser().setSigningKey(JwtProperties.SECRET.getBytes()).parseClaimsJws(jwt);
         } catch (SignatureException ex) {
             log.error("Invalid JWT signature");
             throw ex;

@@ -62,16 +62,20 @@ public class MemberRoomService {
     public ResponseEntity<?> leaveRoom(UserDetailsImpl userDetails, String roomId) {
         Member member = userDetails.getMember();
         Optional<ChatRoom> chatroom = chatRoomRepository.findByRoomId(roomId);
-        if (chatroom.isEmpty()){
-            throw new IllegalArgumentException("존재하지 않는 모임 입니다.");
-        }
-        MemberRoom memberRoom = new MemberRoom(member,null);
+        System.out.println("여기-------------------"+chatroom.get().getId());
 
-        memberRoomRepository.save(memberRoom);
+        MemberRoom memberRoom  = memberRoomRepository.findByChatRoomId(chatroom.get().getId()).orElseThrow(
+                () -> new CustomException(ErrorCode.JOIN_ROOM_CHECK_CODE)
+        );
+
+        Long memberRoomId = memberRoom.getId();
+
+        memberRoomRepository.deleteById(memberRoomId);
 
         //참가자 state 값 변화.
         member.setPostState(null);
         userRepository.save(member);
+        chatroom.get().minusCurrentPeople();
 
         return new ResponseEntity<>("모임을 완료하였습니다.", HttpStatus.valueOf(200));
     }

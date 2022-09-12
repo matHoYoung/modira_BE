@@ -14,7 +14,8 @@ public enum ErrorCode {
     POST_CHECK_CODE(400, "C005", "게시글은 하나만 작성 할 수 있습니다."),
     JOIN_CHECK_CODE(400, "C006", "중복된 참여는 불가능 합니다."),
     JOIN_PULL_CHECK_CODE(400, "C007", "모임 인원이 마감 되었습니다."),
-    JOIN_ROOM_CHECK_CODE(400, "C008", "존재하는 모임이 없습니다.");
+    JOIN_ROOM_CHECK_CODE(400, "C008", "존재하는 모임이 없습니다."),
+    JOIN_CHATROOM_CHECK_CODE(400, "C009", "참여중인 모임이 있습니다.");
 
 
     private final int status;

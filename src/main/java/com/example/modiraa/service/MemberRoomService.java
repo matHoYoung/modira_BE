@@ -13,6 +13,7 @@ import com.example.modiraa.repository.MemberRoomRepository;
 import com.example.modiraa.repository.PostRepository;
 import com.example.modiraa.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Transactional
 @Service
 @RequiredArgsConstructor
@@ -71,20 +73,39 @@ public class MemberRoomService {
             throw new CustomException(ErrorCode.JOIN_ROOM_CHECK_CODE);
         }
 
-        MemberRoom memberRoom  = memberRoomRepository.findByChatRoomIdAndMember_Id(chatroom.get().getId(),member.getId()).orElseThrow(
+        Long chatroomId = chatroom.get().getId();
+
+        MemberRoom memberRoom  = memberRoomRepository.findByChatRoomIdAndMember_Id(chatroomId, member.getId()).orElseThrow(
                 () -> new CustomException(ErrorCode.JOIN_ROOM_CHECK_CODE)
         );
 
         Long memberRoomId = memberRoom.getId();
+        Long memberId = userDetails.getMember().getId();
 
+        Post post = postRepository.findByChatRoomId(chatroomId);
+
+        if (post != null) {
+            if (memberId.equals(post.getMember().getId())) {
+                stateUpdate(member, chatroom, memberRoomId);
+                postRepository.delete(post);
+            }
+            else {
+                stateUpdate(member, chatroom, memberRoomId);
+            }
+        } else {
+            stateUpdate(member, chatroom, memberRoomId);
+        }
+
+        return new ResponseEntity<>("모임을 완료하였습니다.", HttpStatus.valueOf(200));
+    }
+
+    private void stateUpdate(Member member, Optional<ChatRoom> chatroom, Long memberRoomId) {
         memberRoomRepository.deleteById(memberRoomId);
 
         //참가자 state 값 변화.
         member.setPostState(null);
         userRepository.save(member);
         chatroom.get().minusCurrentPeople();
-
-        return new ResponseEntity<>("모임을 완료하였습니다.", HttpStatus.valueOf(200));
     }
 
     // 참여한 유저 정보 리스트

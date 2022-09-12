@@ -39,21 +39,25 @@ public class MemberRoomService {
         if (chatroom.isEmpty()){
             throw new CustomException(ErrorCode.JOIN_ROOM_CHECK_CODE);
         }
-        if(chatroom.get().getMaxPeople() > chatroom.get().getCurrentPeople()) {
-            MemberRoom memberRoom = new MemberRoom(member,chatroom.get());
-            memberRoomRepository.save(memberRoom);
-            chatroom.get().updateCurrentPeople();
-        } else {
-            throw new CustomException(ErrorCode.JOIN_PULL_CHECK_CODE);
-        }
-        if(memberRoom1.isPresent()){
-            throw new CustomException(ErrorCode.JOIN_CHECK_CODE);
-        }
+        if(member.getPostState() == null) {
+            if (chatroom.get().getMaxPeople() > chatroom.get().getCurrentPeople()) {
+                MemberRoom memberRoom = new MemberRoom(member, chatroom.get());
+                memberRoomRepository.save(memberRoom);
+                chatroom.get().updateCurrentPeople();
+            } else {
+                throw new CustomException(ErrorCode.JOIN_PULL_CHECK_CODE);
+            }
+            if (memberRoom1.isPresent()) {
+                throw new CustomException(ErrorCode.JOIN_CHECK_CODE);
+            }
 
-        //참가자 state 값 변화.
-        Post postRoom = postRepository.findByChatRoomId(chatroom.get().getId());
-        member.setPostState(postRoom.getTitle());
-        userRepository.save(member);
+            //참가자 state 값 변화.
+            Post postRoom = postRepository.findByChatRoomId(chatroom.get().getId());
+            member.setPostState(postRoom.getTitle());
+            userRepository.save(member);
+        } else {
+            throw new CustomException(ErrorCode.JOIN_CHATROOM_CHECK_CODE);
+        }
 
         return new ResponseEntity<>("모임에 참여하셨습니다.", HttpStatus.valueOf(200));
     }
@@ -62,6 +66,10 @@ public class MemberRoomService {
     public ResponseEntity<?> leaveRoom(UserDetailsImpl userDetails, String roomId) {
         Member member = userDetails.getMember();
         Optional<ChatRoom> chatroom = chatRoomRepository.findByRoomId(roomId);
+
+        if (chatroom.isEmpty()){
+            throw new CustomException(ErrorCode.JOIN_ROOM_CHECK_CODE);
+        }
 
         MemberRoom memberRoom  = memberRoomRepository.findByChatRoomIdAndMember_Id(chatroom.get().getId(),member.getId()).orElseThrow(
                 () -> new CustomException(ErrorCode.JOIN_ROOM_CHECK_CODE)

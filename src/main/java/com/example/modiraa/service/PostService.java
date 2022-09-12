@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -71,6 +73,17 @@ public class PostService {
     public void deletePost(Long postId, UserDetailsImpl userDetails) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+
+        List<MemberRoom> memberRoomList = memberRoomRepository.findByChatRoomId(post.getChatRoom().getId());
+
+        for (MemberRoom memberRoom : memberRoomList){
+            memberRoomRepository.deleteById(memberRoom.getId());
+
+            Member member = userRepository.findAllById(memberRoom.getMember().getId());
+
+            member.setPostState(null);
+            userRepository.save(member);
+        }
 
         Long memberId = userDetails.getMember().getId();
 

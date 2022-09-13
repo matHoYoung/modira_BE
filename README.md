@@ -37,8 +37,8 @@
 <td><a href="https://github.com/ondoo">이은형</a></td>
 <td><a href="https://github.com/youdaehoon">유대훈</a></td>
 <td><a href="https://github.com/whtnqls124578">조수빈</a></td>
-<td><a href="https://github.com/leesulgi66">이슬기</a></td>
 <td><a href="https://github.com/hyeonor">정현아</a></td>
+<td><a href="https://github.com/leesulgi66">이슬기</a></td>
 <td><a href="https://github.com/matHoYoung">정호영</a></td>
 </tr>
 <tr>
@@ -76,7 +76,6 @@
 - 전체 css
 - 로그인, 회원가입(세션스토리지)
 - 채팅 기능
-- 
 - 각 모임별 상세페이지 구현
 
 <br>
@@ -86,11 +85,12 @@
 - <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
 - <img src="https://img.shields.io/badge/Axios-5A29E4?style=flat-square&logo=Axios&logoColor=white"/>
 - <img src="https://img.shields.io/badge/Redux-764ABC?style=flat-square&logo=Redux&logoColor=white"/>
+- <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/>
 ### 백엔드
-- <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=spring&logoColor=black"/>
-- <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=Spring Boot&logoColor=black"/>
+- <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat-square&logo=spring&logoColor=white"/>
+- <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=Spring Boot&logoColor=white"/>
 - <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/>
 - <img src="https://img.shields.io/badge/Gradle-02303A?style=flat-square&logo=Gradle&logoColor=white"/>
 - <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white"/>
-- <img src="https://img.shields.io/badge/Amazon AWS-FF9900?style=flat-square&logo=Amazon AWS&logoColor=black"/>
-- <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logo=Spring Security&logoColor=black"/>
+- <img src="https://img.shields.io/badge/Amazon AWS-FF9900?style=flat-square&logo=Amazon AWS&logoColor=white"/>
+- <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=flat-square&logo=Spring Security&logoColor=white"/>

@@ -77,9 +77,11 @@
 - 로그인, 회원가입(세션스토리지)
 - 채팅 기능
 - 각 모임별 상세페이지 구현
+  
+## 서비스 아키텍처 
+![아키텍처 1](https://user-images.githubusercontent.com/106013448/189812861-e485d51f-7124-41c2-8b4c-983cbe51f6f8.PNG)
 
 <br>
-## 사용한 기술스택
 
 ### 프론트엔드
 - <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>

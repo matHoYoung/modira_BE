@@ -2,7 +2,7 @@
 <img width="239" alt="KakaoTalk_20220913_104035491" src="https://user-images.githubusercontent.com/106013448/189798711-da466232-6a27-42fd-b323-6b58ee2404d5.png">
 <div>
 
-# 👣 모디라 Modira
+# 모디라 Modira
   → **경상도 사투리 로서 [모여라] 혹은 [뭉쳐라]입니다.**
   
 
